@@ -1,18 +1,21 @@
 import random
 from collections import defaultdict
 from memory import load_memory, save_memory
-
-ALPHABET = list("abcdefghijklmnopqrstuvwxyz ")
-LEARNING_RATE = 0.3
-DECAY_RATE = 0.001
-EXPANSION_THRESHOLD = 0.8
-MAX_GENERATION_LENGTH = 6
+from config import *
 
 
 class ExpandingMind:
     def __init__(self):
         memory = load_memory()
-        self.model = memory.get("symbol_model", {})
+        raw_model = memory.get("symbol_model", {})
+    
+        self.model = {}
+    
+        for ctx, data in raw_model.items():
+            self.model[ctx] = {
+                "transitions": defaultdict(lambda: 0.1, data["transitions"]),
+                "value": data.get("value", 0.0)
+            }
 
     def _save_model(self):
         memory = load_memory()
@@ -40,10 +43,14 @@ class ExpandingMind:
                 return self._weighted_choice(self.model[ctx]["transitions"])
 
         return random.choice(ALPHABET)
+    
+    def generate_single(self):
+        return random.choice(ALPHABET)
 
     def generate(self):
+        length = random.randint(MIN_LENGTH, MAX_LENGTH)
         sequence = ""
-        for _ in range(MAX_GENERATION_LENGTH):
+        for _ in range(length):
             next_char = self._choose_next_char(sequence)
             sequence += next_char
         return sequence
@@ -54,7 +61,9 @@ class ExpandingMind:
             next_char = sequence[i]
 
             if context in self.model:
-                self.model[context]["transitions"][next_char] += LEARNING_RATE * reward_value
+                transitions = self.model[context]["transitions"]
+                if next_char not in transitions: transitions[next_char] = 0.1
+                transitions[next_char] += LEARNING_RATE * reward_value
 
         if reward_value >= EXPANSION_THRESHOLD:
             for i in range(len(sequence)):

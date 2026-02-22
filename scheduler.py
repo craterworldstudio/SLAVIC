@@ -1,5 +1,4 @@
-import time
-import random
+import time, random, string
 from brain import ExpandingMind
 from state import load_state, save_state, drift_state
 from autonomy import generate_internal_thought
@@ -9,43 +8,9 @@ from config import THOUGHT_INTERVAL_MIN, THOUGHT_INTERVAL_MAX
 def should_generate_thought(state):
     return random.random() < state["curiosity"] * state["energy"]
 
-"""def run_autonomy_loop():
-    while True:
-        state = load_state()
-
-        state = drift_state(state)
-
-        
-
-        if state["energy"] <= 0.2:
-            sleep_duration = random.randint(3, 5)  # long sleep
-            log_diary("sleep_start", f"Sleeping for {sleep_duration} seconds.", state)
-
-            time.sleep(sleep_duration)
-
-            state["energy"] = min(1.0, state["energy"] + 0.7)
-
-            log_diary("sleep_end", "Woke up feeling restored.", state)
-
-        thought = None
-        if should_generate_thought(state):
-            thought = generate_internal_thought(state)
-            log_diary("internal_thought", thought, state)
-
-        save_state(state)
-
-        sleep_time = random.randint(
-            THOUGHT_INTERVAL_MIN,
-            THOUGHT_INTERVAL_MAX
-        )
-
-        time.sleep(sleep_time)
-"""
-
-import string
-
-with open("word_list.txt") as f:
+with open("database/words.txt") as f:
     WORDS = set(word.strip().lower() for word in f)
+    print("[!] List prepared.")
 
 def evaluate_learning(sequence, state):
     phase = state["learning_phase"]
@@ -79,7 +44,7 @@ def update_competence(state, reward):
     phase = state["learning_phase"]
 
     # competence increases with consistent reward
-    state["competence"][phase] += reward * 0.02
+    if reward > 0.5: state["competence"][phase] += 0.02
     state["competence"][phase] = min(1.0, state["competence"][phase])
 
 def check_phase_progression(state):
@@ -100,7 +65,10 @@ def run_autonomy_loop():
         state = load_state()
         state = drift_state(state)
 
-        sequence = mind.generate()
+        if state["learning_phase"] == "alphabet":
+            sequence = mind.generate_single()
+        else:
+            sequence = mind.generate()
 
         reward = evaluate_learning(sequence, state)
 
