@@ -8,10 +8,12 @@ class ExpandingMind:
     def __init__(self):
         memory = load_memory()
         raw_model = memory.get("symbol_model", {})
-    
+
         self.model = {}
-    
+
         for ctx, data in raw_model.items():
+            if ctx == "": ctx = ROOT
+
             self.model[ctx] = {
                 "transitions": defaultdict(lambda: 0.1, data["transitions"]),
                 "value": data.get("value", 0.0)
@@ -22,8 +24,22 @@ class ExpandingMind:
         memory["symbol_model"] = self.model
         save_memory(memory)
 
+    #def _get_contexts(self, sequence):
+    #    return [sequence[i:] for i in range(len(sequence))]
+    
     def _get_contexts(self, sequence):
-        return [sequence[i:] for i in range(len(sequence))]
+        if not sequence.startswith(ROOT):
+            sequence = ROOT + sequence
+
+        contexts = []
+        base = sequence[len(ROOT):]
+
+        contexts.append(ROOT + base)
+
+        for i in range(len(base)):
+            contexts.append(ROOT + base[i:])
+
+        return contexts
 
     def _weighted_choice(self, transitions):
         total = sum(transitions.values())
@@ -49,15 +65,21 @@ class ExpandingMind:
 
     def generate(self):
         length = random.randint(MIN_LENGTH, MAX_LENGTH)
-        sequence = ""
-        for _ in range(length):
-            next_char = self._choose_next_char(sequence)
-            sequence += next_char
-        return sequence
+        context = ROOT
+        output = ""
+
+        for _ in range(MAX_LENGTH):
+            if len(output) >= MIN_LENGTH and random.random() < 0.2:
+                break
+            next_char = self._choose_next_char(context)
+            output += next_char
+            context = context + next_char
+        
+        return output
 
     def reward(self, sequence, reward_value):
         for i in range(len(sequence)):
-            context = sequence[:i]
+            context = ROOT + sequence[:i]
             next_char = sequence[i]
 
             if context in self.model:
@@ -67,7 +89,7 @@ class ExpandingMind:
 
         if reward_value >= EXPANSION_THRESHOLD:
             for i in range(len(sequence)):
-                context = sequence[:i]
+                context = ROOT + sequence[:i]
                 next_char = sequence[i]
 
                 if context not in self.model:

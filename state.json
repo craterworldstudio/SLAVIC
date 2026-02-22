@@ -1,6 +1,6 @@
 {
-  "mood": 0.5215005210467291,
-  "energy": 0.0,
+  "mood": 0.1269529601118117,
+  "energy": 10.0,
   "curiosity": 0.7,
   "social_attachment": 0.3,
   "autonomy_drive": 0.9,
@@ -10,9 +10,11 @@
   "learning_phase": "words",
   "competence": {
     "alphabet": 0.6000000000000002,
-    "words": 0.46000000000000013,
+    "words": 0.98,
     "sentences": 0.0
   },
-  "frustration": 1.0,
-  "exposure_counts": {}
+  "frustration": 0.0,
+  "exposure_counts": {},
+  "generation": 1001,
+  "LWC": 65
 }
