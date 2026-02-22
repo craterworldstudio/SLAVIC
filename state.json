@@ -1,0 +1,19 @@
+{
+  "mood": 0.4904064690889787,
+  "energy": 0.8861521964337571,
+  "curiosity": 0.7,
+  "social_attachment": 0.3,
+  "autonomy_drive": 0.9,
+  "active_goal": null,
+  "long_term_goal": "expand understanding",
+  "identity_notes": [],
+
+  "learning_phase": "alphabet",
+  "competence": {
+    "alphabet": 0.0,
+    "words": 0.0,
+    "sentences": 0.0
+  },
+  "frustration": 0.0,
+  "exposure_counts": {}
+}

@@ -1,0 +1,68 @@
+[TIMESTAMP] TYPE: internal_thought
+Energy: 0.62 | Mood: 0.55
+Content: I feel slightly restless.
+
+[2026-02-21 12:18:12] TYPE: internal_thought
+Energy: 0.79 | Mood: 0.49
+Content: I sense mild curiosity rising.
+
+[2026-02-21 12:20:21] TYPE: internal_thought
+Energy: 0.78 | Mood: 0.50
+Content: I feel slightly restless.
+
+[2026-02-21 12:20:38] TYPE: internal_thought
+Energy: 0.77 | Mood: 0.51
+Content: Energy feels stable.
+
+[2026-02-21 12:20:58] TYPE: internal_thought
+Energy: 0.76 | Mood: 0.50
+Content: I wonder if I am progressing.
+
+[2026-02-21 12:21:18] TYPE: internal_thought
+Energy: 0.75 | Mood: 0.51
+Content: Energy feels stable.
+
+[2026-02-21 12:33:26] TYPE: internal_thought
+Energy: 0.75 | Mood: 0.52
+Content: I sense mild curiosity rising.
+
+[2026-02-21 12:33:39] TYPE: internal_thought
+Energy: 0.75 | Mood: 0.54
+Content: I wonder if I am progressing.
+
+[2026-02-21 12:34:13] TYPE: internal_thought
+Energy: 0.73 | Mood: 0.55
+Content: My current goal may need adjustment.
+
+[2026-02-21 12:34:27] TYPE: internal_thought
+Energy: 0.74 | Mood: 0.57
+Content: Energy feels stable.
+
+[2026-02-21 12:35:03] TYPE: internal_thought
+Energy: 0.22 | Mood: 0.56
+Content: I wonder if I am progressing.
+
+[2026-02-21 12:35:20] TYPE: internal_thought
+Energy: 0.22 | Mood: 0.55
+Content: I wonder if I am progressing.
+
+[2026-02-21 12:36:46] TYPE: internal_thought
+Energy: 0.21 | Mood: 0.48
+Content: I feel slightly restless.
+
+[2026-02-21 12:37:05] TYPE: sleep_start
+Energy: 0.20 | Mood: 0.49
+Content: Sleeping for 4 seconds.
+
+[2026-02-21 12:37:09] TYPE: sleep_end
+Energy: 0.90 | Mood: 0.49
+Content: Woke up feeling restored.
+
+[2026-02-21 12:37:09] TYPE: internal_thought
+Energy: 0.90 | Mood: 0.49
+Content: I wonder if I am progressing.
+
+[2026-02-21 12:37:23] TYPE: internal_thought
+Energy: 0.89 | Mood: 0.49
+Content: My current goal may need adjustment.
+
