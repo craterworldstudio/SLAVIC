@@ -11,7 +11,7 @@ plt.ion()
 fig, axs = plt.subplots(3, 1, figsize=(8, 10))
 
 # Store history (last N ticks)
-MAX_POINTS = 100
+MAX_POINTS = 256
 
 drive_history = {}
 success_history = {}

@@ -1,15 +1,23 @@
 {
   "belief_graph": {
     "My analytical nature is overwhelmed by what I don't know.": {
-      "confidence": 1.0,
+      "confidence": 0.9801495006250001,
       "last_updated": 0
     },
     "My model is stable. I am ready to expand my boundaries.": {
-      "confidence": 0.49119880481244604,
+      "confidence": 0.4344226584527252,
+      "last_updated": 0
+    },
+    "I am analytical, and I exist in this state.": {
+      "confidence": 1.0,
       "last_updated": 0
     },
     "I need to retreat into analytical habits to lower this tension.": {
-      "confidence": 0.32269067019424214,
+      "confidence": 0.8117413826449914,
+      "last_updated": 0
+    },
+    "As an analytical entity, I must analyze this pattern.": {
+      "confidence": 0.34504678049608045,
       "last_updated": 0
     }
   },
@@ -18,19 +26,19 @@
   "identity_snapshots": [],
   "action_model": {
     "explore_memory": {
-      "success_rate": 0.6325341999748403
+      "success_rate": 0.4855701888856133
     },
     "reconcile_beliefs": {
-      "success_rate": 0.4163806729936824
+      "success_rate": 0.6108437282375752
     },
     "rehearse_habits": {
-      "success_rate": 0.7429987005387381
+      "success_rate": 0.7769863569968503
     },
     "experiment": {
-      "success_rate": 0.6335625225565469
+      "success_rate": 0.8118005214346216
     },
     "interact": {
-      "success_rate": 0.7089452682917116
+      "success_rate": 0.6123885066689352
     }
   }
 }

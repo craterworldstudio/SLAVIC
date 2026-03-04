@@ -45,3 +45,19 @@ def generate_reflective_thought(state, memory):
         return f"My internal tension is {round(tension, 2)}. I must reconcile my beliefs to find peace."
     
     return "My model is stable. I am ready to expand my boundaries."
+
+def process_thought_impact(state, thought_content):
+    # 🧠 THE "RECURSIVE IMPACT" FLAG
+    # We analyze the 'vibe' of the generated thought.
+    # If the mind thinks something negative, the math suffers.
+    
+    # Simple keyword heuristic (or LLM sentiment analysis)
+    if "overwhelmed" in thought_content or "fail" in thought_content:
+        state["emotions"]["anxiety"] += 0.05
+        state["internal_tension"] += 0.02
+    
+    if "analyze" in thought_content or "logic" in thought_content:
+        state["self_model"]["traits"]["analytical"] += 0.01
+        state["emotions"]["confidence"] += 0.01
+        
+    return state

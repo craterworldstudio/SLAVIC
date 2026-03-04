@@ -25,6 +25,13 @@ def update_model(memory, action, actual_outcome, prediction, learning_rate=0.1):
     actual = 1.0 if actual_outcome == "success" else 0.0
     error = actual - prediction
 
+   
+
+    # Passive return to uncertainty baseline
+    for a in model:
+        model[a]["success_rate"] += 0.001 * (0.5 - model[a]["success_rate"])
+        model[a]["success_rate"] = max(0.0, min(1.0, model[a]["success_rate"]))
+
     # simple delta rule
     model[action]["success_rate"] += learning_rate * error
 

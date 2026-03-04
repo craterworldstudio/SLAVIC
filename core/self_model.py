@@ -35,12 +35,17 @@ class SelfModel:
         return "unresolved", 0.0
 
     def update_traits(self, state):
+        # 🧬 Trait Soft Decay (Identity Plasticity)
+        for t in self.traits:
+            self.traits[t] *= 0.999
+            self.traits[t] = max(0.0, min(1.0, self.traits[t]))
+
         # 3️⃣ THE "PLASTICITY" FLAG
         # Personality isn't static; it shifts based on successful actions.
         dominant = state["dominant_drive"]
         
         if dominant == "curiosity":
-            self.traits["analytical"] = min(1.0, self.traits["analytical"] + 0.005)
+            self.traits["analytical"] = min(1.0, self.traits["analytical"] + 0.001)
         elif dominant == "stability":
             self.traits["reflective"] = min(1.0, self.traits["reflective"] + 0.005)
             # Being too stable reduces impulsivity
@@ -55,3 +60,18 @@ class SelfModel:
         if self.traits["impulsive"] > 0.6:
             return "I react quickly to internal fluctuations."
         return "I am a system in state of self-reflection."
+    
+
+def calculate_dissonance(state):
+    # 🧬 THE "IDENTITY SYNTHESIS" FLAG
+    # Compare raw drive behavior to the stored 'Belief' of self.
+    
+    actual_behavior = state["dominant_drive"]
+    self_belief = state["self_model"]["beliefs"]
+    
+    # If I believe I am analytical (Stability/Coherence) 
+    # but I am acting on Curiosity (Expansion/Impulse)...
+    if "I am fundamentally analytical" in self_belief and actual_behavior == "expansion":
+        # The 'Mind' feels like a hypocrite. Tension rises.
+        return 0.15 
+    return 0.0

@@ -12,8 +12,8 @@ def update_drives(state):
         drives[d] += (baseline[d] - drives[d]) * BASELINE_PULL
 
     # 2️⃣ Emotional modulation
-    drives["curiosity"] += emotions["frustration"] * 0.1
-    drives["coherence"] += emotions["anxiety"] * 0.1
+    drives["curiosity"] += abs(state["prediction_error"]) * 0.1
+    drives["coherence"] += emotions["anxiety"] * 0.01
     drives["expansion"] += emotions["confidence"] * 0.1
 
     if abs(state.get("prediction_error", 0)) > 0.3:

@@ -1,6 +1,7 @@
 #core/scheduler.py
 import time
 import random
+from core.cognition import process_thought_impact
 from core.drives import update_drives
 from core.cognition import generate_thought, generate_reflective_thought
 from core.memory_graph import update_belief
@@ -10,6 +11,8 @@ from logging.utils import log_diary
 from core.world_sim import apply_action, drift_world
 from core.predictive_model import initialize_model, predict_outcome, update_model
 from core.self_model import SelfModel
+from core.self_model import calculate_dissonance
+from core.interaction import handle_interaction
 from config import *
 
 # Action mapping for each drive
@@ -47,7 +50,7 @@ def select_action(state):
     
     #actions = ACTION_MAP.get(dominant, ["do_nothing"])
 
-    if state["internal_tension"] > 0.4:
+    if state["internal_tension"] > 0.5:
         # 30% chance to instinctively revert to habits to lower tension
         if random.random() < 0.3:
             return "rehearse_habits"
@@ -81,6 +84,10 @@ def run():
 
     repeat_count = 0
     last_logged_thought = ""
+    action_repeat_count = 0
+    last_action = None
+
+    predictable_ticks = 0
     
     while True:
         state = load_state()
@@ -105,15 +112,15 @@ def run():
             state["energy"] -= 0.02
 
         if world["social_presence"] < 0.3:
-            state["drives"]["social"] += 0.03
+            state["drives"]["social"] += 0.02
 
         # LONELINESS: If social presence is low, anxiety and social drive rise.
-        if world["social_presence"] < 0.2:
-            state["emotions"]["anxiety"] += 0.05
-            state["drives"]["social"] += 0.1  # The "need" to interact grows
+        if world["social_presence"] < 0.15:
+            state["emotions"]["anxiety"] += 0.03
+            state["drives"]["social"] += 0.05  # The "need" to interact grows
             
         # OVERSTIMULATION: If social presence is too high, it drains energy.
-        if world["social_presence"] > 0.8:
+        if world["social_presence"] > 0.8 and state["drives"]["social"] < 0.3:
             state["energy"] -= 0.03
             state["internal_tension"] += 0.05
 
@@ -129,9 +136,15 @@ def run():
         # 4️⃣ Update drives (now influenced by world pressure)
         state = update_drives(state)
 
+        dissonance = calculate_dissonance(state)
+        if dissonance > 0:
+            state["internal_tension"] += dissonance
+            state["emotions"]["anxiety"] += (dissonance * 0.5)
+            log_diary("system_event", f"Cognitive Dissonance detected: {dissonance}", state)
+
         # 5️⃣ Generate thought
         thought = generate_thought(state, memory)
-
+        state = process_thought_impact(state, thought)
         if thought == last_logged_thought:
             repeat_count += 1
         else:
@@ -171,17 +184,46 @@ def run():
         if tick_count % 50 == 0 or state["internal_tension"] > 0.6:
             memory = consolidate_memory(memory)
             state["internal_tension"] *= 0.5  # Artificial 'calming' effect
+            state["internal_tension"] = max(0.0, state["internal_tension"])
             state["emotions"]["anxiety"] *= 0.8
             log_diary("system_event", "Consolidating memory and lowering tension.", state)
 
         # 7️⃣ Select action
         action = select_action(state)
+        if action == last_action:
+            action_repeat_count += 1
+        else:
+            action_repeat_count = 0
+
+        last_action = action
+
+        # Exploration Fatigue (Behavioral Diversification Mechanism)
+        if action_repeat_count > 3:
+            log_diary("system_event", "Behavioral fixation detected. Inducing diversification.", state)
+        
+            # Reduce dominant drive slightly
+            state["drives"][state["dominant_drive"]] *= 0.8
+        
+            # Instead of random chaos, choose viable alternative
+            viable_actions = [
+                a for a, data in memory["action_model"].items()
+                if data["success_rate"] > 0.2
+            ]
+        
+            if viable_actions:
+                action = random.choice(viable_actions)
+
 
         # 8️⃣ Predict outcome
         predicted = predict_outcome(memory, action)
 
         # 9️⃣ Apply action
-        state, outcome = apply_action(state, action, sm)
+        if action == "interact":
+            outcome = handle_interaction(state, state["world"])
+        else:
+            state, outcome = apply_action(state, action, sm)
+
+        #state, outcome = apply_action(state, action, sm)
 
         # 🔟 Energy cost
         state["energy"] -= ENERGY_COST
@@ -190,6 +232,15 @@ def run():
         # 1️⃣1️⃣ Update predictive model
         error = update_model(memory, action, outcome, predicted)
         state["prediction_error"] = error
+
+        # 🧠 Boredom Mechanism (Predictability -> Curiosity)
+        if abs(state["prediction_error"]) < 0.1:
+            #state["drives"]["curiosity"] += 0.02
+            predictable_ticks = min(predictable_ticks + 1, 200)
+        else:
+            predictable_ticks = 0
+
+        state["drives"]["curiosity"] += 0.0015 * predictable_ticks
 
         # 1️⃣2️⃣ Instability burst (phase transition)
         if abs(error) > 0.6:
@@ -216,6 +267,11 @@ def run():
 
         for e in state["emotions"]:
             state["emotions"][e] = max(0.0, min(1.0, state["emotions"][e]))
+
+        # Emotional baseline drift (nervous system recovery)
+        for e in state["emotions"]:
+            baseline = 0.2  # resting emotional tone
+            state["emotions"][e] += (baseline - state["emotions"][e]) * 0.02
 
         # 1️⃣5️⃣ Log action
         log_diary("action_taken", {"action": action, "outcome": outcome}, state)

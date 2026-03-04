@@ -12,14 +12,17 @@ from core.self_model import SelfModel
 def drift_world(state):
     world = state["world"]
 
-    # random environmental fluctuations
     world["threat_level"] += random.uniform(-0.02, 0.02)
     world["social_presence"] += random.uniform(-0.01, 0.01)
 
+    # 🌱 Resource regeneration
+    if world["resources"] < 10:
+        world["resources"] += random.uniform(-0.15, 0.15)
+
     # clamp
-    for k in world:
-        if isinstance(world[k], float):
-            world[k] = max(0.0, min(1.0, world[k]))
+    world["threat_level"] = max(0.0, min(1.0, world["threat_level"]))
+    world["social_presence"] = max(0.0, min(1.0, world["social_presence"]))
+    world["resources"] = max(0.0, min(10.0, world["resources"]))
 
     return state
 
@@ -38,7 +41,7 @@ def apply_action(state, action, sm):
 
     if action == "explore_memory":
         if outcome == "success":
-            state["drives"]["curiosity"] += 0.05
+            state["drives"]["curiosity"] -= 0.08
             state["emotions"]["confidence"] += 0.03
             
             # 1️⃣ THE "INSIGHT" FLAG
@@ -50,8 +53,9 @@ def apply_action(state, action, sm):
             if new_belief not in state["self_model"]["beliefs"]:
                 state["self_model"]["beliefs"][new_belief] = round(state["emotions"]["confidence"], 2)
         else:
-            state["drives"]["curiosity"] -= 0.02
+            state["drives"]["curiosity"] += 0.02
             state["emotions"]["frustration"] += 0.04
+            state["prediction_error"] += 0.1
 
     elif action == "reconcile_beliefs":
         # 2️⃣ THE "RESOLUTION" FLAG
@@ -70,7 +74,8 @@ def apply_action(state, action, sm):
                 save_memory(memory) # Save the 'cleaned' memory
                 state["internal_tension"] -= tension_relief
                 state["emotions"]["anxiety"] -= 0.1
-                state["self_model"]["goals"].append("Maintain Consistency")
+                if "Maintain Consistency" not in state["self_model"]["goals"]:
+                    state["self_model"]["goals"].append("Maintain Consistency")
 
 
             #state["internal_tension"] *= 0.7  # Significant relief
@@ -91,7 +96,10 @@ def apply_action(state, action, sm):
     elif action == "experiment":
         state["drives"]["expansion"] += 0.04
         state["emotions"]["confidence"] += 0.02
-        world_state["resources"] = max(0, world_state["resources"] - 1)
+        if outcome == "success":
+            world_state["resources"] += random.uniform(0.5, 1.5)
+        else:
+            world_state["resources"] -= random.uniform(0.5, 1.0)
 
     elif action == "interact":
         # 3️⃣ THE "CONNECTION" FLAG

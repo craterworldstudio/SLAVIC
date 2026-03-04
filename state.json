@@ -1,11 +1,11 @@
 {
-  "time": 2419,
+  "time": 1109,
   "drives": {
-    "curiosity": 0.5892579165964581,
-    "coherence": 0.4945607484111308,
-    "stability": 0.26489793836756664,
-    "expansion": 0.28984195462101253,
-    "social": 0.33880545148845287
+    "curiosity": 0.3353973700052776,
+    "coherence": 0.28797149262661115,
+    "stability": 0.26602418389779336,
+    "expansion": 0.3671383778592979,
+    "social": 0.25108407384091613
   },
   "drive_baseline": {
     "curiosity": 0.5,
@@ -14,31 +14,33 @@
     "expansion": 0.5,
     "social": 0.5
   },
-  "dominant_drive": "curiosity",
-  "internal_tension": 0.3243599782288914,
+  "dominant_drive": "expansion",
+  "internal_tension": 0.08431329616436145,
   "emotions": {
-    "frustration": 1.0,
-    "confidence": 0.32,
-    "anxiety": 1.0
+    "frustration": 0.894500426597376,
+    "confidence": 0.506007797549376,
+    "anxiety": 0.9560014000247047
   },
   "self_model": {
     "traits": {
-      "analytical": 1.0,
-      "impulsive": 0.185,
-      "reflective": 0.515
+      "analytical": 0.5440256309274901,
+      "impulsive": 0.0,
+      "reflective": 0.2574455391622338
     },
     "beliefs": {
-      "I am fundamentally analytical.": 0.060000000000000005
+      "I am fundamentally analytical.": 1.0
     },
-    "goals": []
+    "goals": [
+      "Maintain Consistency"
+    ]
   },
-  "last_thought": "My analytical nature is overwhelmed by what I don't know.",
-  "energy": 0.43739999999999013,
+  "last_thought": "I am analytical, and I exist in this state.",
+  "energy": 0.7767999999999996,
   "mood": 0.5,
-  "prediction_error": 0.40829533336128854,
+  "prediction_error": 0.20878696169675026,
   "world": {
-    "resources": 4,
-    "threat_level": 0.14237062409161633,
-    "social_presence": 0.29401642933496275
+    "resources": 10.745105446235806,
+    "threat_level": 0.42650385848328665,
+    "social_presence": 0.891076251194963
   }
 }
