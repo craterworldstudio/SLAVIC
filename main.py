@@ -1,5 +1,5 @@
-from scheduler import run_autonomy_loop
-from brain import ExpandingMind
+from core.scheduler import run
 
 if __name__ == "__main__":
-    run_autonomy_loop()
+    print("Starting SLAVIC...")
+    run()

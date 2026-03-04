@@ -68,10 +68,13 @@ class ExpandingMind:
         context = ROOT
         output = ""
 
-        for _ in range(MAX_LENGTH):
-            if len(output) >= MIN_LENGTH and random.random() < 0.2:
+        for _ in range(length):
+            #if len(output) >= MIN_LENGTH and random.random() < 0.2:
+            #   break
+            next_char = self._choose_next_char(context) 
+
+            if next_char == END_TOKEN:
                 break
-            next_char = self._choose_next_char(context)
             output += next_char
             context = context + next_char
         
@@ -84,8 +87,16 @@ class ExpandingMind:
 
             if context in self.model:
                 transitions = self.model[context]["transitions"]
+
                 if next_char not in transitions: transitions[next_char] = 0.1
-                transitions[next_char] += LEARNING_RATE * reward_value
+
+                # Positive reinforcement
+                if reward_value > 0.5:
+                    transitions[next_char] += LEARNING_RATE * reward_value
+                # Mild negative reinforcement
+                else:
+                    transitions[next_char] -= LEARNING_RATE * 0.05
+                    transitions[next_char] = max(0.01, transitions[next_char])
 
         if reward_value >= EXPANSION_THRESHOLD:
             for i in range(len(sequence)):
@@ -103,10 +114,35 @@ class ExpandingMind:
 
                 self.model[context]["value"] += reward_value
 
+        final_context = ROOT + sequence
+        if final_context not in self.model:
+            self.model[final_context] = {
+                "transitions": defaultdict(lambda: 0.1),
+                "value": 0.0
+            }
+
+        transitions = self.model[final_context]["transitions"]
+
+        if END_TOKEN not in transitions:
+            transitions[END_TOKEN] = 0.1
+
+        if reward_value > 0.5:
+            transitions[END_TOKEN] += LEARNING_RATE * reward_value
+            
         self._decay()
         self._save_model()
 
     def _decay(self):
         for ctx in self.model:
-            for char in self.model[ctx]["transitions"]:
-                self.model[ctx]["transitions"][char] *= (1 - DECAY_RATE)
+            transitions = self.model[ctx]["transitions"]
+
+            # decay
+            for char in transitions:
+                transitions[char] *= (1 - DECAY_RATE)
+                transitions[char] = max(0.01, transitions[char])
+
+            # normalize
+            total = sum(transitions.values())
+            if total > 0:
+                for char in transitions:
+                    transitions[char] /= total

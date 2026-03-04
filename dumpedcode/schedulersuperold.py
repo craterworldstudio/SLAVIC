@@ -6,12 +6,23 @@ from autonomy import generate_internal_thought
 from utils import log_diary
 from config import *
 
+class RLWLM:
+    def __init__(self) -> None:
+        self.RLWORDs = []
+
+    def reset(self):
+        self.RLWORDs = WORDS
+    
+    def update_RLWL(self, LwL):
+        self.RLWORDs = [wd for wd in WORDS if wd not in LwL]
+
 def should_generate_thought(state):
     return random.random() < state["curiosity"] * state["energy"]
 
-with open("database/words.txt") as f:
+with open("database/words1000.txt") as f:
     WORDS = set(word.strip().lower() for word in f)
     print("[!] List prepared.")
+    
 
 def is_clean_word(sequence):
     token = sequence.strip().lower()
@@ -43,7 +54,10 @@ def evaluate_learning(sequence, state):
             if len(clean) == 1 and clean not in VALID_SHORT:
                 reward = 0.0
             else:
-                reward = 1.0
+                if len(clean) == 1:
+                    reward = 0.4   # weaker reward for single letters
+                else:
+                    reward = 1.0
         else:
             reward = 0.0
 
@@ -77,8 +91,11 @@ def update_competence(state, reward, clean_structure):
 
     if reward > 0.8 and clean_structure:
         state["competence"][phase] += 0.02
+
     elif reward < 0.2:
-        state["competence"][phase] -= 0.02
+        penalty = 0.02 * (1 - state["competence"][phase])
+        state["competence"][phase] -= penalty
+        #state["competence"][phase] -= 0.02
 
     state["competence"][phase] = max(0.0, min(1.0, state["competence"][phase]))
 
@@ -95,24 +112,53 @@ def check_phase_progression(state):
 
 def run_autonomy_loop():
     mind = ExpandingMind()
+    rlwm = RLWLM()
+
     while True:
         state = load_state()
         state["generation"] = state.get("generation", 0) + 1
+        recent_outputs = state.get("recent_outputs", [])
         state = drift_state(state)
+        if "competence_history" not in state:
+            state["competence_history"] = []
+
+        memory = load_memory()
+        #rlwm.RLWORDs = memory.get("RLV", WORDS)
+        vocab = memory.get("learned_vocabulary", {})
+        if rlwm.RLWORDs == []: rlwm.reset()
+        rlwm.update_RLWL(list(vocab.keys()))
+
         inj = False
+
         if state["learning_phase"] == "alphabet":
             sequence = mind.generate_single()
         else:
-            exposure_rate = 0.4 * (1 - state["competence"]["words"])
-            if state["learning_phase"] == "words" and random.random() < exposure_rate:
-                sequence = random.choice(list(WORDS))
+            
+            novelty_pressure = state["frustration"] * ((1 - state["competence"]["words"]) ** 2)
+            exposure_rate = min(0.3, novelty_pressure * state["curiosity"])
+            #exposure_rate = 0.4 * (1 - state["competence"]["words"])
+            if state["learning_phase"] == "words" and rlwm.RLWORDs and random.random() < exposure_rate:
+                sequence = random.choice(list(rlwm.RLWORDs))
+                #rlwm.RLWORDs.remove()
+                #sequence = random.choice(list(WORDS))
                 inj = True
             else:
                 sequence = mind.generate()
 
-        reward = evaluate_learning(sequence, state)
-        memory = load_memory()
-        vocab = memory.get("learned_vocabulary", {})
+        reward = evaluate_learning(sequence, state) 
+        
+        # Repetition boredom mechanism
+        if sequence in recent_outputs and state["competence"]["words"] < 0.8:
+            reward *= 0.3  # dampen repeated success
+
+        recent_outputs.append(sequence)
+
+        if len(recent_outputs) > 10:
+            recent_outputs = recent_outputs[-10:]
+
+        state["recent_outputs"] = recent_outputs
+
+        
         generation = state.get("generation", 0)
         state["LWC"] = len(vocab.keys())
         effective_reward = reward #* state["energy"]
@@ -139,10 +185,37 @@ def run_autonomy_loop():
                 vocab[word]["last_seen"] = generation
 
             memory["learned_vocabulary"] = vocab
+            memory["RLV"] = rlwm.RLWORDs
             save_memory(memory)
             
         update_competence(state, reward, clean_structure)
 
+        # Track word competence history
+        state["competence_history"].append(state["competence"]["words"])
+
+        # Keep last 500 entries only
+        if len(state["competence_history"]) > MAX_HISTORY:
+            state["competence_history"] = state["competence_history"][-MAX_HISTORY:]
+
+        if reward > 0.8:
+            state["frustration"] *= 0.9
+
+        if len(state["competence_history"]) >= 200:
+            recent = state["competence_history"][-200:]
+            start = recent[0]
+            end = recent[-1]
+            delta = end - start
+            avg = sum(recent) / len(recent)
+        
+            # Only treat as stagnation if low competence AND flat growth
+            if abs(delta) < 0.01 and avg < 0.9:
+                state["frustration"] += 0.05
+                state["frustration"] = min(1.0, state["frustration"])
+                state["curiosity"] += 0.02
+                state["curiosity"] = min(1.0, state["curiosity"])
+        
+                print(">>> Stagnation detected — boosting exploration")
+        
         check_phase_progression(state)
 
         log_diary(f"symbol_generation INJ: {inj}", f"{sequence} | reward={reward:.2f}", state)

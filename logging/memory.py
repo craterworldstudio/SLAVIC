@@ -1,3 +1,4 @@
+#logging/memory.py
 import json
 
 MEMORY_FILE = "memory.json"

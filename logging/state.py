@@ -1,3 +1,4 @@
+#logging/state.py
 import json
 
 STATE_FILE = "state.json"
@@ -17,6 +18,6 @@ from config import ENERGY_DECAY, MOOD_DRIFT
 import random
 
 def drift_state(state):
-    #state["energy"] = clamp(state["energy"] - ENERGY_DECAY) #random.uniform(-ENERGY_DECAY, ENERGY_DECAY))
+    state["energy"] = clamp(state["energy"] - ENERGY_DECAY) #random.uniform(-ENERGY_DECAY, ENERGY_DECAY))
     state["mood"] = clamp(state["mood"] + random.uniform(-MOOD_DRIFT, MOOD_DRIFT))
     return state

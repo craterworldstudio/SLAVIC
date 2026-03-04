@@ -1,20 +1,44 @@
 {
-  "mood": 0.1269529601118117,
-  "energy": 10.0,
-  "curiosity": 0.7,
-  "social_attachment": 0.3,
-  "autonomy_drive": 0.9,
-  "active_goal": null,
-  "long_term_goal": "expand understanding",
-  "identity_notes": [],
-  "learning_phase": "words",
-  "competence": {
-    "alphabet": 0.6000000000000002,
-    "words": 0.98,
-    "sentences": 0.0
+  "time": 2419,
+  "drives": {
+    "curiosity": 0.5892579165964581,
+    "coherence": 0.4945607484111308,
+    "stability": 0.26489793836756664,
+    "expansion": 0.28984195462101253,
+    "social": 0.33880545148845287
   },
-  "frustration": 0.0,
-  "exposure_counts": {},
-  "generation": 1001,
-  "LWC": 65
+  "drive_baseline": {
+    "curiosity": 0.5,
+    "coherence": 0.5,
+    "stability": 0.5,
+    "expansion": 0.5,
+    "social": 0.5
+  },
+  "dominant_drive": "curiosity",
+  "internal_tension": 0.3243599782288914,
+  "emotions": {
+    "frustration": 1.0,
+    "confidence": 0.32,
+    "anxiety": 1.0
+  },
+  "self_model": {
+    "traits": {
+      "analytical": 1.0,
+      "impulsive": 0.185,
+      "reflective": 0.515
+    },
+    "beliefs": {
+      "I am fundamentally analytical.": 0.060000000000000005
+    },
+    "goals": []
+  },
+  "last_thought": "My analytical nature is overwhelmed by what I don't know.",
+  "energy": 0.43739999999999013,
+  "mood": 0.5,
+  "prediction_error": 0.40829533336128854,
+  "world": {
+    "resources": 4,
+    "threat_level": 0.14237062409161633,
+    "social_presence": 0.29401642933496275
+  }
 }
