@@ -1,8 +1,11 @@
+//mind.cpp
 #include "mind.hpp"
-#include "../SLAVIC/simulation/world_state.hpp"
 #include <iostream>
 
+DriveSystem drives;
 WorldState world;
+
+
 Mind::Mind() : tick_count(0), running(true) {}
 
 bool Mind::is_running() const {
@@ -39,7 +42,14 @@ void Mind::perceive() {
     world.update();
 }
 
-void Mind::update_drives() {}
+void Mind::update_drives() {
+    drives.update(world.threat, world.resource, world.social_presence);
+
+    float tension = drives.get_internal_tension();
+
+    std::cout << "Tension: " << tension << "\n";
+}
+
 void Mind::generate_thoughts() {}
 void Mind::select_action() {}
 void Mind::apply_action() {}

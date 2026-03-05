@@ -1,3 +1,6 @@
+//main.cpp
+#include "core/mind.hpp"
+
 int main() {
     Mind mind;
     mind.load_state();

@@ -1,0 +1,3 @@
+/home/tori/Codestuff/SLAVIC/build/CMakeFiles/SLAVIC.dir
+/home/tori/Codestuff/SLAVIC/build/CMakeFiles/edit_cache.dir
+/home/tori/Codestuff/SLAVIC/build/CMakeFiles/rebuild_cache.dir

@@ -1,5 +1,8 @@
+//mind.hpp
 #pragma once
 
+#include "drives/drive_system.hpp"
+#include "../simulation/world_state.hpp"
 #include <memory>
 
 class Mind {
