@@ -129,53 +129,53 @@ SLAVIC/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/build
 .PHONY : SLAVIC/fast
 
-core/cognition_/action_selector.o: core/cognition_/action_selector.cpp.o
-.PHONY : core/cognition_/action_selector.o
+core/cognition/action_selector.o: core/cognition/action_selector.cpp.o
+.PHONY : core/cognition/action_selector.o
 
 # target to build an object file
-core/cognition_/action_selector.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o
-.PHONY : core/cognition_/action_selector.cpp.o
+core/cognition/action_selector.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o
+.PHONY : core/cognition/action_selector.cpp.o
 
-core/cognition_/action_selector.i: core/cognition_/action_selector.cpp.i
-.PHONY : core/cognition_/action_selector.i
+core/cognition/action_selector.i: core/cognition/action_selector.cpp.i
+.PHONY : core/cognition/action_selector.i
 
 # target to preprocess a source file
-core/cognition_/action_selector.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.i
-.PHONY : core/cognition_/action_selector.cpp.i
+core/cognition/action_selector.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.i
+.PHONY : core/cognition/action_selector.cpp.i
 
-core/cognition_/action_selector.s: core/cognition_/action_selector.cpp.s
-.PHONY : core/cognition_/action_selector.s
+core/cognition/action_selector.s: core/cognition/action_selector.cpp.s
+.PHONY : core/cognition/action_selector.s
 
 # target to generate assembly for a file
-core/cognition_/action_selector.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.s
-.PHONY : core/cognition_/action_selector.cpp.s
+core/cognition/action_selector.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.s
+.PHONY : core/cognition/action_selector.cpp.s
 
-core/cognition_/thought_generator.o: core/cognition_/thought_generator.cpp.o
-.PHONY : core/cognition_/thought_generator.o
+core/cognition/thought_generator.o: core/cognition/thought_generator.cpp.o
+.PHONY : core/cognition/thought_generator.o
 
 # target to build an object file
-core/cognition_/thought_generator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o
-.PHONY : core/cognition_/thought_generator.cpp.o
+core/cognition/thought_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o
+.PHONY : core/cognition/thought_generator.cpp.o
 
-core/cognition_/thought_generator.i: core/cognition_/thought_generator.cpp.i
-.PHONY : core/cognition_/thought_generator.i
+core/cognition/thought_generator.i: core/cognition/thought_generator.cpp.i
+.PHONY : core/cognition/thought_generator.i
 
 # target to preprocess a source file
-core/cognition_/thought_generator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.i
-.PHONY : core/cognition_/thought_generator.cpp.i
+core/cognition/thought_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.i
+.PHONY : core/cognition/thought_generator.cpp.i
 
-core/cognition_/thought_generator.s: core/cognition_/thought_generator.cpp.s
-.PHONY : core/cognition_/thought_generator.s
+core/cognition/thought_generator.s: core/cognition/thought_generator.cpp.s
+.PHONY : core/cognition/thought_generator.s
 
 # target to generate assembly for a file
-core/cognition_/thought_generator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.s
-.PHONY : core/cognition_/thought_generator.cpp.s
+core/cognition/thought_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SLAVIC.dir/build.make CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.s
+.PHONY : core/cognition/thought_generator.cpp.s
 
 core/drives/drive_system.o: core/drives/drive_system.cpp.o
 .PHONY : core/drives/drive_system.o
@@ -450,12 +450,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SLAVIC"
-	@echo "... core/cognition_/action_selector.o"
-	@echo "... core/cognition_/action_selector.i"
-	@echo "... core/cognition_/action_selector.s"
-	@echo "... core/cognition_/thought_generator.o"
-	@echo "... core/cognition_/thought_generator.i"
-	@echo "... core/cognition_/thought_generator.s"
+	@echo "... core/cognition/action_selector.o"
+	@echo "... core/cognition/action_selector.i"
+	@echo "... core/cognition/action_selector.s"
+	@echo "... core/cognition/thought_generator.o"
+	@echo "... core/cognition/thought_generator.i"
+	@echo "... core/cognition/thought_generator.s"
 	@echo "... core/drives/drive_system.o"
 	@echo "... core/drives/drive_system.i"
 	@echo "... core/drives/drive_system.s"

@@ -72,33 +72,33 @@ include CMakeFiles/SLAVIC.dir/flags.make
 CMakeFiles/SLAVIC.dir/codegen:
 .PHONY : CMakeFiles/SLAVIC.dir/codegen
 
-CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o: CMakeFiles/SLAVIC.dir/flags.make
-CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o: /home/tori/Codestuff/SLAVIC/core/cognition\ /action_selector.cpp
-CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o: CMakeFiles/SLAVIC.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tori/Codestuff/SLAVIC/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o -MF CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o.d -o CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o -c "/home/tori/Codestuff/SLAVIC/core/cognition /action_selector.cpp"
+CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o: CMakeFiles/SLAVIC.dir/flags.make
+CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o: /home/tori/Codestuff/SLAVIC/core/cognition/action_selector.cpp
+CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o: CMakeFiles/SLAVIC.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tori/Codestuff/SLAVIC/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o -MF CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o.d -o CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o -c /home/tori/Codestuff/SLAVIC/core/cognition/action_selector.cpp
 
-CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/tori/Codestuff/SLAVIC/core/cognition /action_selector.cpp" > CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.i
+CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tori/Codestuff/SLAVIC/core/cognition/action_selector.cpp > CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.i
 
-CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/tori/Codestuff/SLAVIC/core/cognition /action_selector.cpp" -o CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.s
+CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tori/Codestuff/SLAVIC/core/cognition/action_selector.cpp -o CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.s
 
-CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o: CMakeFiles/SLAVIC.dir/flags.make
-CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o: /home/tori/Codestuff/SLAVIC/core/cognition\ /thought_generator.cpp
-CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o: CMakeFiles/SLAVIC.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tori/Codestuff/SLAVIC/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o -MF CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o.d -o CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o -c "/home/tori/Codestuff/SLAVIC/core/cognition /thought_generator.cpp"
+CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o: CMakeFiles/SLAVIC.dir/flags.make
+CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o: /home/tori/Codestuff/SLAVIC/core/cognition/thought_generator.cpp
+CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o: CMakeFiles/SLAVIC.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tori/Codestuff/SLAVIC/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o -MF CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o.d -o CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o -c /home/tori/Codestuff/SLAVIC/core/cognition/thought_generator.cpp
 
-CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/tori/Codestuff/SLAVIC/core/cognition /thought_generator.cpp" > CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.i
+CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tori/Codestuff/SLAVIC/core/cognition/thought_generator.cpp > CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.i
 
-CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/tori/Codestuff/SLAVIC/core/cognition /thought_generator.cpp" -o CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.s
+CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tori/Codestuff/SLAVIC/core/cognition/thought_generator.cpp -o CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.s
 
 CMakeFiles/SLAVIC.dir/core/drives/drive_system.cpp.o: CMakeFiles/SLAVIC.dir/flags.make
 CMakeFiles/SLAVIC.dir/core/drives/drive_system.cpp.o: /home/tori/Codestuff/SLAVIC/core/drives/drive_system.cpp
@@ -256,8 +256,8 @@ CMakeFiles/SLAVIC.dir/utils/logger.cpp.s: cmake_force
 
 # Object files for target SLAVIC
 SLAVIC_OBJECTS = \
-"CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o" \
-"CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o" \
+"CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o" \
+"CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o" \
 "CMakeFiles/SLAVIC.dir/core/drives/drive_system.cpp.o" \
 "CMakeFiles/SLAVIC.dir/core/emotion/emotion_system.cpp.o" \
 "CMakeFiles/SLAVIC.dir/core/identity/identity_core.cpp.o" \
@@ -273,8 +273,8 @@ SLAVIC_OBJECTS = \
 # External object files for target SLAVIC
 SLAVIC_EXTERNAL_OBJECTS =
 
-SLAVIC: CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o
-SLAVIC: CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o
+SLAVIC: CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o
+SLAVIC: CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o
 SLAVIC: CMakeFiles/SLAVIC.dir/core/drives/drive_system.cpp.o
 SLAVIC: CMakeFiles/SLAVIC.dir/core/emotion/emotion_system.cpp.o
 SLAVIC: CMakeFiles/SLAVIC.dir/core/identity/identity_core.cpp.o

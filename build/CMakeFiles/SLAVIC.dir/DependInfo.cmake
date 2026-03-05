@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/tori/Codestuff/SLAVIC/core/cognition /action_selector.cpp" "CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/cognition_/action_selector.cpp.o.d"
-  "/home/tori/Codestuff/SLAVIC/core/cognition /thought_generator.cpp" "CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/cognition_/thought_generator.cpp.o.d"
+  "/home/tori/Codestuff/SLAVIC/core/cognition/action_selector.cpp" "CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/cognition/action_selector.cpp.o.d"
+  "/home/tori/Codestuff/SLAVIC/core/cognition/thought_generator.cpp" "CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/cognition/thought_generator.cpp.o.d"
   "/home/tori/Codestuff/SLAVIC/core/drives/drive_system.cpp" "CMakeFiles/SLAVIC.dir/core/drives/drive_system.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/drives/drive_system.cpp.o.d"
   "/home/tori/Codestuff/SLAVIC/core/emotion/emotion_system.cpp" "CMakeFiles/SLAVIC.dir/core/emotion/emotion_system.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/emotion/emotion_system.cpp.o.d"
   "/home/tori/Codestuff/SLAVIC/core/identity/identity_core.cpp" "CMakeFiles/SLAVIC.dir/core/identity/identity_core.cpp.o" "gcc" "CMakeFiles/SLAVIC.dir/core/identity/identity_core.cpp.o.d"
