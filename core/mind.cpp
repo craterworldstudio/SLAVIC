@@ -2,10 +2,6 @@
 #include "mind.hpp"
 #include <iostream>
 
-DriveSystem drives;
-WorldState world;
-
-
 Mind::Mind() : tick_count(0), running(true) {}
 
 bool Mind::is_running() const {

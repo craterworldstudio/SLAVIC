@@ -16,6 +16,9 @@ public:
     void save_state();
 
 private:
+    DriveSystem drives;
+    WorldState world;
+    
     int tick_count;
     bool running;
 
