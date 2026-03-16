@@ -8,17 +8,25 @@ ActionType ActionSelector::select(
     const EmotionState& emotion,
     const MemorySystem& memory
 ) {
+
     float explore_score =
         drives.get_drive("curiosity") * (1.0f + emotion.curiosity_bias);
+
     explore_score += memory.get_action_bias(ActionType::Explore);
+
     float retreat_score =
         drives.get_drive("stability") * (1.0f + emotion.fear_bias);
+
     retreat_score += memory.get_action_bias(ActionType::Retreat);
+
     float social_score =
         drives.get_drive("social");
+
     social_score += memory.get_action_bias(ActionType::Socialize);
+
     float stabilize_score =
         drives.get_drive("coherence");
+        
     stabilize_score += memory.get_action_bias(ActionType::Stabilize);
 
     explore_score = std::max(0.01f, explore_score);

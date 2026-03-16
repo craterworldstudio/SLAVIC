@@ -9,6 +9,7 @@
 #include <memory>
 #include "emotion/emotion_system.hpp"
 #include "memory/episodic_memory.hpp"
+#include "memory/experience.hpp"
 
 class Mind {
 public:

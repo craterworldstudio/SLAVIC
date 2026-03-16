@@ -9,18 +9,20 @@ struct EmotionState {
 class EmotionSystem {
 public:
 
-    float fragility;
+    float fragility;  // heals over time
+    float ego_strength;   // fluctuates
     EmotionSystem();
 
     void update(float tension, float outcome);
     void decay();
     void apply_baseline_shift(float shift);
+    float get_intensity() const;
 
     EmotionState get_state() const;
 
 private:
-          // heals over time
-    float ego_strength;   // fluctuates
+         
+    
     EmotionState state;
 
     void clamp(float& v);

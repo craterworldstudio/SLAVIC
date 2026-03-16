@@ -37,3 +37,8 @@ void EmotionSystem::apply_baseline_shift(float shift) {
     fragility += shift;
     clamp(fragility);
 }
+
+float EmotionSystem::get_intensity() const
+{
+    return state.anxiety;
+}

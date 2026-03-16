@@ -53,6 +53,16 @@ void MemorySystem::decay()
     );
 }
 
+void MemorySystem::store_experience(const Experience& exp)
+{
+    store(
+        exp.action,
+        exp.outcome,
+        exp.tension,
+        exp.emotional_intensity
+    );
+}
+
 float MemorySystem::get_action_bias(ActionType action) const
 {
     float bias = 0.0f;
@@ -67,10 +77,13 @@ float MemorySystem::get_action_bias(ActionType action) const
 
 float MemorySystem::get_emotional_shift() const
 {
-    float shift = 0.0f;
+    if (memories.empty()) return 0.0f;
 
-    for (const auto& m : memories)
-        shift += m.tension * m.strength;
-
-    return shift * 0.01f;
+    float total = 0.0f;
+    
+    for (const auto& m : memories) total += m.outcome * m.strength; 
+    
+    float average = total / memories.size(); 
+    
+    return average * 0.05f; // very small drift
 }

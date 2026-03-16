@@ -42,3 +42,19 @@ float DriveSystem::get_internal_tension() const {
 void DriveSystem::clamp(float& value) {
     value = std::clamp(value, 0.0f, 1.0f);
 }
+
+void DriveSystem::reduce_tension(float amount)
+{
+    float avg = 0.0f;
+
+    for (const auto& d : drives)
+        avg += d.second;
+
+    avg /= drives.size();
+
+    for (auto& d : drives)
+    {
+        d.second += (avg - d.second) * amount;
+        clamp(d.second);
+    }
+}

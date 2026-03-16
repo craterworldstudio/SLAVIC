@@ -28,7 +28,7 @@ void Mind::tick() {
     select_action();
     apply_action();
     update_emotion();
-    memory.decay();
+    if (tick_count % 500 == 0) memory.decay();
     store_experience();
     adjust_identity();
 
@@ -86,18 +86,30 @@ void Mind::apply_action() {
     switch (current_action) {
 
         case ActionType::Explore:
+            world.resource += 0.05f;
+            world.threat += 0.02f;
+
             last_outcome = (rand() % 100 < 60) ? 0.3f : -0.3f;
             break;
 
         case ActionType::Retreat:
+            world.threat -= 0.05f;
+            world.resource -= 0.02f;
+
             last_outcome = 0.1f;  // safe but low reward
             break;
 
         case ActionType::Socialize:
+            world.social_presence += 0.05f;
+            world.threat += 0.01f;
+
             last_outcome = (rand() % 100 < 50) ? 0.2f : -0.2f;
             break;
 
         case ActionType::Stabilize:
+            drives.reduce_tension(0.05f);
+            world.resource -= 0.01f;
+            
             last_outcome = 0.15f;
             break;
     }
@@ -108,10 +120,20 @@ void Mind::update_emotion() {
     emotion.apply_baseline_shift(memory.get_emotional_shift());
 }
 
-void Mind::store_experience() {
-    memory.store(current_action,
-             last_outcome,
-             last_tension,
-             emotion.fragility);
+void Mind::store_experience()
+{
+    float novelty = world.get_novelty();   // or temporary constant
+    float emotional_intensity = emotion.get_intensity();
+
+    Experience exp(
+        current_action,
+        last_outcome,
+        last_tension,
+        novelty,
+        emotional_intensity
+    );
+
+    memory.store_experience(exp);
 }
+
 void Mind::adjust_identity() {}
