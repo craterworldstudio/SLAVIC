@@ -1,0 +1,58 @@
+loop forever:
+
+    1. receive environment update
+    2. process perception
+    3. update predictions
+    4. compute prediction error
+    5. activate relevant memories
+    6. competing thoughts generated
+    7. global workspace selects dominant thought
+    8. possible action created
+    9. memory updated
+
+Input:
+environment events
+
+Output:
+internal representations
+
+Example:
+APPEAR(A)
+PROPERTY(A,color=red)
+
+
+Experience:
+    time
+    observed object
+    event type
+    context
+Memory allows:
+pattern detection
+similarity search
+prediction learning
+
+Attention System
+If prediction fails:
+prediction_error increases
+attention shifts to that event
+
+Action Generation
+Actions are not random.
+They are generated from:
+prediction testing
+information seeking
+interaction attempts
+
+Examples:
+focus_on_object
+store_memory
+send_message
+observe_environment
+
+
+Continuous Operation
+The system never stops running.
+Even without new events it should:
+review memory
+refine predictions
+generate internal thoughts

@@ -1,0 +1,42 @@
+{
+    "Objects" : [
+        "Block",
+        "Sphere",
+        "Circle",
+        "Plane",
+        "Pyramid"
+    ],
+    "Properties" : {
+        "Color" : [
+            "red",
+            "green",
+            "blue",
+            "white",
+            
+            "yellow",
+            "pink"
+        ],
+        "Size" : {
+            "vsmall": 50.0 ,
+            "small":  40.0 ,
+            "medium": 30.0 ,
+            "big":    20.0 ,
+            "vbig":   10.0
+        },
+        "State" : [
+            "Stationary",
+            "Moving"
+        ],
+        "Ailments" : {}
+    },
+    "Phenomenon" : [
+        "Move",
+        "Stop",
+        "Spawn",
+        
+        "Grow",
+        "Shrink",
+        "Maintain",
+        "Duplicate"
+    ]
+}
