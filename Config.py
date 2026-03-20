@@ -1,3 +1,4 @@
+#config.py
 ATICKSPEED = 1 #Per second for Agent
 WTICKSPEED = 10 # Per second for World
 

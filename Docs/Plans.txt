@@ -42,8 +42,14 @@ Action Generator
 Scheduler
 
 Planned Phases
-Phase 1
-Basic environment + perception
+
+Phase 1 (NOW)
+Build clear modules:
+Perception ✅ (done)
+Workspace (attention)
+Memory (VSA)
+Predictor
+Drives
 
 Phase 2
 Prediction system

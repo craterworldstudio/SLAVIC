@@ -47,42 +47,6 @@ class Ray:
             return t
         return None
 
-
-    def advanceOld(self, WorldEntityList):
-        if self.casted == False:
-            return 1, None, []
-        
-        self.Position[0] += self.Direction[0] * self.StepSize #type: ignore
-        self.Position[1] += self.Direction[1] * self.StepSize #type: ignore 
-
-        for Entity in WorldEntityList:
-            dx = self.Position[0] - Entity.Position[0]
-            dy = self.Position[1] - Entity.Position[1]
-
-            if math.sqrt(dx*dx + dy*dy) < Entity.sizenum:
-                self.Hit = True
-                self.HitEntity = Entity
-                #print(f"Ray hit at distance {self.Dist}")
-                break
-        
-        dx = self.Position[0] - self.Origin[0]
-        dy = self.Position[1] - self.Origin[1]
-
-        self.Dist = math.sqrt(dx*dx + dy*dy)
-
-        #self.Dist = round(math.sqrt(self.Position[0]**2 + self.Position[1]**2))
-
-        if self.Dist >= MAXDISTANCE and self.Hit == False :
-            self.Exhausted = True
-            return 1, None, [self.Position, self.Dist]
-
-        elif self.Hit and self.HitEntity != None:
-            self.Exhausted = True
-            return 0, self.HitEntity, [self.Position, self.Dist]
-        
-        return 2, None, []
-
-
     def advance(self, WorldEntityList):
         if self.casted == False:
             return 1, None, []

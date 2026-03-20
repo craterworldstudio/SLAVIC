@@ -12,7 +12,7 @@
             "green",
             "blue",
             "white",
-            
+            "Black",
             "yellow",
             "pink"
         ],
@@ -33,7 +33,7 @@
         "Move",
         "Stop",
         "Spawn",
-        
+        "Destroy",
         "Grow",
         "Shrink",
         "Maintain",

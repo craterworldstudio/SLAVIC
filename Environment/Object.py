@@ -28,7 +28,7 @@ class Object:
         self.sizenum = self.Data["Properties"]["Size"][self.size]
         self.state = self.Data["Properties"]["State"][random.randint(0, len(self.Data["Properties"]["State"])-1)]
         self.ObjectUpdateTick = random.randrange(5, 20)
-        self.stepSize = 10 * self.Data["Properties"]["Size"][self.size]
+        self.stepSize = int(self.Data["Properties"]["Size"][self.size]) // 10
 
         self.redrawColliderPoints()
 
@@ -181,7 +181,7 @@ class Object:
                 self.size = sizelist[-1]
                 self.sizenum = self.Data["Properties"]["Size"][self.size]
                 
-            self.stepSize = 10 * self.Data["Properties"]["Size"][self.size]
+            self.stepSize = int(self.Data["Properties"]["Size"][self.size]) // 10
 
             self.redrawColliderPoints()
             #nxtGrowthIdx = (sizelist.index(self.size) + 1) if not (sizelist.index(self.size) < len(sizelist)) else -1
