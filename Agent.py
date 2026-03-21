@@ -2,6 +2,8 @@
 from GWThreads import workspace as ws
 
 from PerceptionSystem.ProtoVision import Ray, vision
+from MemoryUnit.memory import VSManager
+
 import math
 from Config import *
 
@@ -11,6 +13,8 @@ class Agent:
         self.position = [400, 300]   # start somewhere in world
         self.head_angle = HEADANGLE        # radians
         self.vision = vision()
+
+        self.memory = VSManager(dims = DIMS)
 
     def update(self, WorldEntityLists):
 

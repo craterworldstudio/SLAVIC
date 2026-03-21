@@ -123,7 +123,7 @@ class vision:
                             "color": Entity.color,  #type: ignore
                             "angle": ray.angle,
                             "shape": Entity.shape, #type: ignore
-                            "size": Entity.sizenum #type: ignore
+                            "size": Entity.size #type: ignore
                         })
 
             elif StsCode == 1:

@@ -12,16 +12,16 @@
             "green",
             "blue",
             "white",
-            "Black",
+            "black",
             "yellow",
             "pink"
         ],
         "Size" : {
-            "vsmall": 50.0 ,
+            "tiny": 50.0 ,
             "small":  40.0 ,
             "medium": 30.0 ,
             "big":    20.0 ,
-            "vbig":   10.0
+            "huge":   10.0
         },
         "State" : [
             "Stationary",
