@@ -135,3 +135,31 @@ class VSManager:
 
         return recMatch, recMatchStrength
     
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+
+class LiveMemoryView:
+    def __init__(self, vs_manager):
+        self.vs = vs_manager
+        self.pca = PCA(n_components=2)
+
+        plt.ion()  # interactive mode
+        self.fig, self.ax = plt.subplots()
+
+    def update(self):
+        if len(self.vs.Memory) < 2:
+            return
+
+        data = np.array(self.vs.Memory)
+
+        reduced = self.pca.fit_transform(data)
+
+        self.ax.clear()
+        self.ax.scatter(reduced[:, 0], reduced[:, 1])
+
+        self.ax.set_title("Live Memory Space")
+        plt.draw()
+        plt.pause(0.001)

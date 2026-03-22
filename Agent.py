@@ -2,7 +2,7 @@
 from GWThreads import workspace as ws
 
 from PerceptionSystem.ProtoVision import Ray, vision
-from MemoryUnit.memory import VSManager
+from MemoryUnit.memory import VSManager, LiveMemoryView
 
 import math
 from Config import *
@@ -13,24 +13,35 @@ class Agent:
         self.position = [400, 300]   # start somewhere in world
         self.head_angle = HEADANGLE        # radians
         self.vision = vision()
-
-        self.memory = VSManager(dims = DIMS)
+        self.cWS = ws.Workspace()
+        self.vsm = VSManager(dims = DIMS)
+        self.memory_view = LiveMemoryView(self.vsm)
+        self.frame_count = 0
 
     def update(self, WorldEntityLists):
-
+        self.frame_count += 1
         # Sync vision with agent
         self.vision.origin = self.position
         self.vision.angle = self.head_angle #type: ignore
 
         seen, ViewBuffer = self.vision.scan(WorldEntityLists)
-        
-        cWS = ws.Workspace()
+    
+        processedBuffer = self.cWS.process_task(ViewBuffer)
 
-        processedBuffer = cWS.process_task(ViewBuffer)
         minDist = float('inf')
-        if processedBuffer['color'] is not None: minDist = processedBuffer['distance'] #type: ignore
+        score = 0.0
+        if processedBuffer and processedBuffer['color'] is not None:  #type: ignore
 
-        print(f"Agent sees {len(seen)} objects. \t Entites: {len(WorldEntityLists)} \t Minimum Distance: {minDist}", end="\r")
+            minDist = processedBuffer['distance'] #type: ignore
+
+            mem, score = self.vsm.recall(processedBuffer)
+            if score < 0.85: self.vsm.store(processedBuffer)
+            print(f"MemScore: {round(score, 3)}", end=" | ")
+
+        print(f"Agent sees {len(seen)} objects. Entites: {len(WorldEntityLists)} MinDist: {minDist} MemScore: {round(score,3)}", end="\r")
+
+        if self.frame_count % 10 == 0:
+            self.memory_view.update()
 
         # Simple test: rotate head every tick
         self.head_angle +=  math.radians(ROTATIONSPEED)

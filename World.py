@@ -12,8 +12,11 @@ tick = 0
 tick_duration = 1 / WTICKSPEED
 
 data = Loader.loadEventsData()
-Cr = Object.Object(data)
-WorldEntityList.append(Cr)
+Cr1 = Object.Object(data)
+WorldEntityList.append(Cr1)
+Cr2 = Object.Object(data)
+WorldEntityList.append(Cr2)
+
 agent = Agent()
 
 pygame.init()
@@ -35,7 +38,9 @@ while True:
     
     render(screen, WorldEntityList, agent)
 
-    if len(WorldEntityList) == 0: break
+    if len(WorldEntityList) == 0: 
+        RCr1 = Object.Object(data)
+        WorldEntityList.append(RCr1)
 
     clock.tick(60)
     tick+=1

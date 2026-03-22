@@ -99,3 +99,7 @@ def render(screen, objects, agent):
     draw_rays(screen, agent)
 
     pygame.display.flip()
+
+
+
+    
