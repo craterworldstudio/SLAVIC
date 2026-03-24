@@ -20,6 +20,10 @@ class Agent:
 
     def update(self, WorldEntityLists):
         self.frame_count += 1
+
+        if len(self.vsm.Memory) > MAX_MEMORY:
+            self.vsm.Memory.pop(0)
+
         # Sync vision with agent
         self.vision.origin = self.position
         self.vision.angle = self.head_angle #type: ignore
@@ -32,16 +36,18 @@ class Agent:
         score = 0.0
         if processedBuffer and processedBuffer['color'] is not None:  #type: ignore
 
-            minDist = processedBuffer['distance'] #type: ignore
-
-            mem, score = self.vsm.recall(processedBuffer)
-            if score < 0.85: self.vsm.store(processedBuffer)
-            print(f"MemScore: {round(score, 3)}", end=" | ")
+            minDist = processedBuffer['distance'] #type: ignore 
+            if not self.vsm.Memory:
+                self.vsm.store(processedBuffer)
+            else:   
+                mem, score = self.vsm.recall(processedBuffer)
+                if score < 0.85: self.vsm.store(processedBuffer)
+            #print(f"MemScore: {round(score, 3)}", end=" | ")
 
         print(f"Agent sees {len(seen)} objects. Entites: {len(WorldEntityLists)} MinDist: {minDist} MemScore: {round(score,3)}", end="\r")
 
-        if self.frame_count % 10 == 0:
-            self.memory_view.update()
+        #if self.frame_count % 10 == 0:
+        self.memory_view.update()
 
         # Simple test: rotate head every tick
         self.head_angle +=  math.radians(ROTATIONSPEED)

@@ -92,7 +92,7 @@ def draw_rays(screen, agent):
         )
 
 def render(screen, objects, agent):
-    screen.fill((0, 0, 0))
+    screen.fill((36, 36, 36))
 
     draw_objects(screen, objects)
     draw_agent(screen, agent)

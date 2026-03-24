@@ -5,6 +5,7 @@ class VSManager:
     def __init__(self, dims) -> None:
         self.Cache = {}
         self.Memory = []
+        self.Links = []
         self.dims = dims
 
     def newVector(self, empty = False):
@@ -21,7 +22,18 @@ class VSManager:
     
     def store(self, BufferFrame):
         MemVec = self.encode(BufferFrame)
+
+        parent = None
+        best_score = -1
+
+        for i, mem in enumerate(self.Memory):
+            score = self.cosine_similarity(MemVec, mem)
+            if score > best_score:
+                best_score = score
+                parent = i
+
         self.Memory.append(MemVec)
+        self.Links.append(parent)
     
     def get(self, key):
         if key not in self.Cache: 
@@ -144,22 +156,61 @@ from sklearn.decomposition import PCA
 class LiveMemoryView:
     def __init__(self, vs_manager):
         self.vs = vs_manager
-        self.pca = PCA(n_components=2)
+        self.pca = PCA(n_components=3)
 
-        plt.ion()  # interactive mode
-        self.fig, self.ax = plt.subplots()
+        plt.ion()
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(111, projection='3d')
+        self.fig.patch.set_facecolor('black')
+        self.ax.set_facecolor('black')
 
     def update(self):
-        if len(self.vs.Memory) < 2:
+        if len(self.vs.Memory) < 3:
             return
 
         data = np.array(self.vs.Memory)
-
         reduced = self.pca.fit_transform(data)
 
         self.ax.clear()
-        self.ax.scatter(reduced[:, 0], reduced[:, 1])
 
-        self.ax.set_title("Live Memory Space")
+        self.ax.set_xticks([])
+        self.ax.set_yticks([])
+        self.ax.set_zticks([])
+
+        self.ax.grid(False)
+
+        self.ax.xaxis
+
+        # Remove axis panes (the cube faces)
+        self.ax.xaxis.pane.fill = False
+        self.ax.yaxis.pane.fill = False
+        self.ax.zaxis.pane.fill = False
+    
+
+        # Remove pane edges (the cube lines)
+        self.ax.xaxis.pane.set_edgecolor('none')
+        self.ax.yaxis.pane.set_edgecolor('none')
+        self.ax.zaxis.pane.set_edgecolor('none')
+
+        # Remove axis lines completely
+        self.ax.xaxis.line.set_color((0,0,0,0))
+        self.ax.yaxis.line.set_color((0,0,0,0))
+        self.ax.zaxis.line.set_color((0,0,0,0))
+
+        # Plot points
+        xs, ys, zs = reduced[:,0], reduced[:,1], reduced[:,2]
+        self.ax.scatter(xs, ys, zs) #type: ignore
+
+        # 🔗 Draw connections (tree-like)
+        for i, parent in enumerate(self.vs.Links):
+            if parent is not None:
+                self.ax.plot(
+                    [xs[i], xs[parent]],
+                    [ys[i], ys[parent]],
+                    [zs[i], zs[parent]],
+                    alpha=0.7
+                )
+
+        self.ax.set_title("Memory Structure (3D)")
         plt.draw()
         plt.pause(0.001)
