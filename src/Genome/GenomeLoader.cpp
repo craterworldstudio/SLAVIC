@@ -1,41 +1,80 @@
-#ifndef DHM_GENOME_GENOME_LOADER_H
-#define DHM_GENOME_GENOME_LOADER_H
-
-#include "Genome.h"
-#include <filesystem>
-#include <expected>
-#include <string>
+#include "GenomeLoader.h"
+#include <fstream>
+#include <sstream>
+#include <charconv>
 
 namespace dhm::genome {
 
-enum class LoaderError : uint8_t {
-    FileNotFound,
-    ReadFailed,
-    ParseError,
-    CorruptData,
-    InvalidSchema
-};
+SubsystemType GenomeLoader::parse_subsystem(std::string_view str) noexcept {
+    if (str == "BrainTopology") return SubsystemType::BrainTopology;
+    if (str == "Plasticity")    return SubsystemType::Plasticity;
+    if (str == "Drives")        return SubsystemType::Drives;
+    if (str == "Hormones")      return SubsystemType::Hormones;
+    if (str == "Perception")    return SubsystemType::Perception;
+    if (str == "Motor")         return SubsystemType::Motor;
+    return SubsystemType::Metacognition;
+}
 
-class GenomeLoader {
-public:
-    /**
-     * @brief Loads and parses a digital genome definition from disk.
-     */
-    [[nodiscard]] static std::expected<Genome, LoaderError> load_from_file(
-        const std::filesystem::path& file_path
-    ) noexcept;
+std::expected<Genome, LoaderError> GenomeLoader::load_from_file(
+    const std::filesystem::path& file_path
+) noexcept {
+    if (!std::filesystem::exists(file_path)) {
+        return std::unexpected(LoaderError::FileNotFound);
+    }
 
-    /**
-     * @brief Direct text buffer parsing.
-     */
-    [[nodiscard]] static std::expected<Genome, LoaderError> parse(
-        std::string_view raw_content
-    ) noexcept;
+    std::ifstream file(file_path, std::ios::in | std::ios::binary);
+    if (!file.is_open()) {
+        return std::unexpected(LoaderError::ReadFailed);
+    }
 
-private:
-    [[nodiscard]] static SubsystemType parse_subsystem(std::string_view str) noexcept;
-};
+    std::ostringstream ss;
+    ss << file.rdbuf();
+    return parse(ss.str());
+}
+
+std::expected<Genome, LoaderError> GenomeLoader::parse(
+    std::string_view raw_content
+) noexcept {
+    if (raw_content.empty()) {
+        return std::unexpected(LoaderError::CorruptData);
+    }
+
+    // Default embryonic initialization
+    Genome genome(1001, "Genesis-Embryo");
+
+    Chromosome primary_chromosome(1, "Autonomic-Core");
+
+    // Pre-wired developmental curiosity drive
+    Gene curiosity_gene(
+        101,
+        "curiosity_baseline",
+        SubsystemType::Drives,
+        "drive_curiosity_base",
+        Allele{0.85, 1.0, true},
+        Allele{0.70, 0.5, true},
+        ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Infancy, DevelopmentalStage::Adulthood},
+        0.02,
+        true
+    );
+
+    // Pre-wired neurochemical baseline
+    Gene dopamine_gene(
+        102,
+        "dopamine_clearance",
+        SubsystemType::Hormones,
+        "dopamine_clearance_rate",
+        Allele{0.05, 0.8, true},
+        Allele{0.04, 0.8, true},
+        ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Embryo, DevelopmentalStage::Adulthood},
+        0.01,
+        true
+    );
+
+    primary_chromosome.add_gene(std::move(curiosity_gene));
+    primary_chromosome.add_gene(std::move(dopamine_gene));
+    genome.add_chromosome(std::move(primary_chromosome));
+
+    return genome;
+}
 
 } // namespace dhm::genome
-
-#endif // DHM_GENOME_GENOME_LOADER_H
