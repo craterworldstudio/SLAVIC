@@ -1,39 +1,64 @@
-#ifndef DHM_BRAIN_BRAIN_H
-#define DHM_BRAIN_BRAIN_H
-
-#include "GpuBrainContext.h"
-#include "BrainState.h"
-#include "../Genome/Genome.h"
-#include <memory>
-#include <cstdint>
+#include "Brain.h"
+#include <iostream>
 
 namespace dhm::brain {
 
-class Brain {
-public:
-    Brain();
-    ~Brain();
+Brain::Brain() {
+    context_.initialize();
+    state_ = std::make_unique<BrainState>(context_);
+}
 
-    // Lifecycle
-    void bootstrap(const genome::Genome& genome);
-    void tick(float delta_time_ms);
-    void shutdown() noexcept;
+Brain::~Brain() {
+    shutdown();
+}
 
-    // Subsystem Modulators
-    void inject_neuromodulators(float dopamine, float noradrenaline) noexcept;
+void Brain::bootstrap(const genome::Genome& genome) {
+    std::cout << "[Brain] Reading genome: " << genome.get_lineage_name() << std::endl;
 
-    // Getters
-    [[nodiscard]] BrainState& get_state() noexcept { return *state_; }
-    [[nodiscard]] const BrainState& get_state() const noexcept { return *state_; }
-    [[nodiscard]] GpuBrainContext& get_context() noexcept { return context_; }
+    // Read developmental parameters from digital genome
+    auto hormone_params = genome.express_subsystem(
+        genome::SubsystemType::Hormones, 
+        genome::DevelopmentalStage::Embryo
+    );
 
-private:
-    GpuBrainContext context_;
-    std::unique_ptr<BrainState> state_;
-    uint64_t current_tick_{0};
-    bool is_running_{false};
-};
+    float dopamine_baseline = 0.05f;
+    float noradrenaline_gain = 0.80f;
+
+    if (hormone_params.contains("dopamine_clearance_rate")) {
+        dopamine_baseline = static_cast<float>(hormone_params["dopamine_clearance_rate"]);
+    }
+    if (hormone_params.contains("noradrenaline_arousal_gain")) {
+        noradrenaline_gain = static_cast<float>(hormone_params["noradrenaline_arousal_gain"]);
+    }
+
+    state_->set_modulators(dopamine_baseline, noradrenaline_gain);
+
+    // Initial embryonic allocation: 100,000 protoneurons
+    constexpr uint32_t INITIAL_EMBRYO_NEURONS = 100'000;
+    state_->allocate(INITIAL_EMBRYO_NEURONS);
+
+    is_running_ = true;
+    std::cout << "[Brain] Embryonic bootstrap complete. Online." << std::endl;
+}
+
+void Brain::tick(float delta_time_ms) {
+    if (!is_running_) return;
+
+    current_tick_++;
+    // Future step: vkCmdDispatch compute shader pass for neuron dynamics
+}
+
+void Brain::inject_neuromodulators(float dopamine, float noradrenaline) noexcept {
+    if (state_) {
+        state_->set_modulators(dopamine, noradrenaline);
+    }
+}
+
+void Brain::shutdown() noexcept {
+    if (is_running_) {
+        std::cout << "[Brain] Shutting down simulation clock..." << std::endl;
+        is_running_ = false;
+    }
+}
 
 } // namespace dhm::brain
-
-#endif // DHM_BRAIN_BRAIN_H
