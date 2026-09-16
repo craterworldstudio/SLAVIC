@@ -177,7 +177,7 @@ GpuBuffer GpuBrainContext::create_buffer(VkDeviceSize size, VkBufferUsageFlags u
     }
 
     VkMemoryRequirements mem_requirements;
-    vkGetBufferMemoryRequirements(device_, &gpu_buffer.buffer, &mem_requirements);
+    vkGetBufferMemoryRequirements(device_, gpu_buffer.buffer, &mem_requirements);
 
     VkMemoryAllocateInfo alloc_info{};
     alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;

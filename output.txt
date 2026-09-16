@@ -1,0 +1,8 @@
+[  2%] Building CXX object CMakeFiles/DHM-Core.dir/src/Development/Embryo.cpp.o
+[  7%] Building CXX object CMakeFiles/DHM-Core.dir/src/Brain/GpuBrainContext.cpp.o
+[  7%] Building CXX object CMakeFiles/DHM-Core.dir/src/Brain/Brain.cpp.o
+[ 10%] Building CXX object CMakeFiles/DHM-Core.dir/src/Genome/GenomeBuilder.cpp.o
+[ 12%] Building CXX object CMakeFiles/DHM-Core.dir/src/Genome/Genome.cpp.o
+[ 17%] Building CXX object CMakeFiles/DHM-Core.dir/src/Genome/GenomeLoader.cpp.o
+[ 17%] Building CXX object CMakeFiles/DHM-Core.dir/src/Genome/GenomeValidator.cpp.o
+[ 20%] Building CXX object CMakeFiles/DHM-Core.dir/src/main.cpp.o

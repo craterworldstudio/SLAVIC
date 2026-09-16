@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <algorithm>
 
-namespace slavic::genetics {
+namespace dhm::genome {
 
 /**
  * @brief Subsystems influenced by gene expression.
@@ -161,6 +161,6 @@ private:
     bool is_mutable_{true};
 };
 
-} // namespace slavic::genetics
+} // namespace dhm::genetics
 
 #endif // SLAVIC_GENETICS_GENE_H

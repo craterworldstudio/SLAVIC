@@ -1,6 +1,6 @@
 #include "Gene.h"
 
-namespace slavic::genetics {
+namespace dhm::genome {
 
 // Explicit out-of-line implementations if non-trivial logic expands
 double compute_dominance_blend(const Allele& maternal, const Allele& paternal) noexcept {
@@ -12,4 +12,4 @@ double compute_dominance_blend(const Allele& maternal, const Allele& paternal) n
     return (maternal.value + paternal.value) * 0.5;
 }
 
-} // namespace slavic::genetics
+} // namespace dhm::genome

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(DHM-Core VERSION 0.1.0 LANGUAGES CXX)
+project(DHM-02 VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,10 +26,10 @@ file(GLOB_RECURSE DHM_SOURCES
     "src/*.h"
 )
 
-add_executable(DHM-Core ${DHM_SOURCES})
+add_executable(DHM-02 ${DHM_SOURCES})
 
-target_link_libraries(DHM-Core PRIVATE Vulkan::Vulkan)
+target_link_libraries(DHM-02 PRIVATE Vulkan::Vulkan)
 
-target_include_directories(DHM-Core PUBLIC
+target_include_directories(DHM-02 PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 )
