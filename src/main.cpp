@@ -1,14 +1,30 @@
 #include <iostream>
-#include "Utilities/Logger.h"
+#include "Genome/GenomeBuilder.h"
 #include "Brain/Brain.h"
 
-int main(int argc, char* argv[]) {
+int main() {
     std::cout << "==========================================" << std::endl;
-    std::cout << " Digital Human Mind (DHM) - Core Runtime " << std::endl;
+    std::cout << " Digital Human Mind (DHM) - Core Runtime  " << std::endl;
     std::cout << "==========================================" << std::endl;
 
-    // Phase 0: Genetics & Initial Embryo Instantiation Target
-    std::cout << "[Init] Initializing Digital Genome Engine..." << std::endl;
+    try {
+        // 1. Build wild-type genome
+        std::cout << "[Phase 0] Synthesizing Adam Genome Template..." << std::endl;
+        auto genome = dhm::genome::GenomeBuilder::create_default_human_template();
+
+        // 2. Initialize Spiking Brain with Vulkan Compute Backend
+        std::cout << "[Phase 0] Instantiating Spiking Brain Context..." << std::endl;
+        dhm::brain::Brain brain;
+
+        // 3. Boot embryo from genetic code
+        brain.bootstrap(genome);
+
+        std::cout << "[Phase 0] System operational on dedicated GPU." << std::endl;
+
+    } catch (const std::exception& e) {
+        std::cerr << "[Fatal Error] " << e.what() << std::endl;
+        return 1;
+    }
 
     return 0;
 }
