@@ -20,16 +20,32 @@ include_directories(
     ${Vulkan_INCLUDE_DIRS}
 )
 
-# Collect all source files
+# Collect all source files (using absolute paths for safety)
 file(GLOB_RECURSE DHM_SOURCES 
-    "src/*.cpp"
-    "src/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
 
 add_executable(DHM-02 ${DHM_SOURCES})
 
-target_link_libraries(DHM-02 PRIVATE Vulkan::Vulkan)
+# --- Jolt Physics Setup ---
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(USE_STATIC_MSVC_RUNTIME_LIBRARY OFF CACHE BOOL "" FORCE)
+set(PORTABLE_COMPILER_FLAGS ON CACHE BOOL "" FORCE)
+add_subdirectory(external/jolt)
+
+# --- JSON Setup ---
+include(FetchContent)
+FetchContent_Declare(
+    json
+    URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+FetchContent_MakeAvailable(json)
+
+# --- Linking & Includes ---
+target_link_libraries(DHM-02 PRIVATE Vulkan::Vulkan Jolt nlohmann_json::nlohmann_json)
 
 target_include_directories(DHM-02 PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/jolt>
 )
