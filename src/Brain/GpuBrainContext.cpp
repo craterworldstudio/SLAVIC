@@ -106,6 +106,18 @@ void GpuBrainContext::pick_physical_device() {
         }
     }
 
+    for (const auto& dev : devices) {
+        auto indices = find_queue_families(dev);
+        if (indices.is_complete()) {
+            VkPhysicalDeviceProperties props;
+            vkGetPhysicalDeviceProperties(dev, &props);
+            physical_device_ = dev;
+            queue_indices_ = indices;
+            std::cout << "[GpuBrainContext] Fallback Device: " << props.deviceName << std::endl;
+            return;
+        }
+    }
+
     if (physical_device_ == VK_NULL_HANDLE) {
         throw std::runtime_error("[GpuBrainContext] Suitable discrete GPU not found.");
     }
