@@ -21,6 +21,12 @@ int main() {
 
         std::cout << "[Phase 0] System operational on dedicated GPU." << std::endl;
 
+        std::cout << "[Simulation] Running 10 embryonic ticks on GPU..." << std::endl;
+        for (int i = 0; i < 10; ++i) {
+            brain.tick(0.5f); // 0.5 ms per step
+        }
+        std::cout << "[Simulation] Ticks completed successfully." << std::endl;
+
     } catch (const std::exception& e) {
         std::cerr << "[Fatal Error] " << e.what() << std::endl;
         return 1;
