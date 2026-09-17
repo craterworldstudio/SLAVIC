@@ -1,0 +1,72 @@
+#version 450
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+// Matches struct GpuNeuron in BrainState.h
+struct Neuron {
+    vec3 position;
+    float padding_pos;
+    float v;                     // Membrane potential (mV)
+    float u;                     // Membrane recovery variable
+    uint fired;                  // 1 if spiked this tick, 0 otherwise
+    uint layer_type;             // 0: Sensory, 1: Subcortex, 2: Cortex, 3: Motor
+    uint refractory_ticks;       // Post-spike cooldown counter
+    uint padding_tail[3];
+};
+
+layout(std430, binding = 0) buffer NeuronStorageBuffer {
+    Neuron neurons[];
+};
+
+// Global modulators pushed from BrainClock
+layout(push_constant) uniform ModulatorPushConstants {
+    float dopamine_level;        // Synaptic plasticity gate (0.0 to 1.0)
+    float noradrenaline_level;   // Cortical arousal / gain threshold modifier
+    float dt;                    // Timestep in ms (typically 0.5)
+    uint total_neurons;
+} modulators;
+
+void main() {
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= modulators.total_neurons) return;
+
+    Neuron n = neurons[idx];
+
+    // Standard Regular Spiking (RS) biological parameters
+    const float a = 0.02;
+    const float b = 0.2;
+    const float c = -65.0; // Reset voltage in mV
+    const float d = 8.0;   // Reset recovery bias
+
+    // Noradrenaline lowers the firing threshold (enhances sensory gain & alertness)
+    float spike_threshold = 30.0 - (modulators.noradrenaline_level * 10.0);
+
+    if (n.refractory_ticks > 0u) {
+        n.refractory_ticks--;
+        n.fired = 0u;
+        neurons[idx] = n;
+        return;
+    }
+
+    // Check if neuron spiked in this timestep
+    if (n.v >= spike_threshold) {
+        n.v = c;
+        n.u += d;
+        n.fired = 1u;
+        n.refractory_ticks = 2u; // 1 ms refractory lockout
+    } else {
+        n.fired = 0u;
+
+        // Innate biological noise / membrane drift
+        float current_injection = 0.5;
+
+        // Izhikevich numerical integration step
+        float dv = (0.04 * n.v * n.v + 5.0 * n.v + 140.0 - n.u + current_injection) * modulators.dt;
+        float du = (a * (b * n.v - n.u)) * modulators.dt;
+
+        n.v += dv;
+        n.u += du;
+    }
+
+    neurons[idx] = n;
+}
