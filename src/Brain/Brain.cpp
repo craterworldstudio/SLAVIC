@@ -3,6 +3,9 @@
 
 namespace dhm::brain {
 
+void initialize_compute_pipeline(GpuBrainContext& context, BrainState& state);
+void dispatch_simulation_step(GpuBrainContext& context, BrainState& state, float delta_time_ms);
+
 Brain::Brain() {
     context_.initialize();
     state_ = std::make_unique<BrainState>(context_);
@@ -37,6 +40,9 @@ void Brain::bootstrap(const genome::Genome& genome) {
     constexpr uint32_t INITIAL_EMBRYO_NEURONS = 100'000;
     state_->allocate(INITIAL_EMBRYO_NEURONS);
 
+    //Compile compute pipeline and bind to VRAM buffer
+    initialize_compute_pipeline(context_, *state_);
+
     is_running_ = true;
     std::cout << "[Brain] Embryonic bootstrap complete. Online." << std::endl;
 }
@@ -45,7 +51,8 @@ void Brain::tick(float delta_time_ms) {
     if (!is_running_) return;
 
     current_tick_++;
-    // Future step: vkCmdDispatch compute shader pass for neuron dynamics
+    //vkCmdDispatch compute shader pass for neuron dynamics
+    dispatch_simulation_step(context_, *state_, delta_time_ms);
 }
 
 void Brain::inject_neuromodulators(float dopamine, float noradrenaline) noexcept {
