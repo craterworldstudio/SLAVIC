@@ -1,67 +1,90 @@
-#include "GenomeBuilder.h"
+#include "GenomeLoader.h"
+#include <nlohmann/json.hpp>
+#include <iostream>
+
+using json = nlohmann::json;
 
 namespace dhm::genome {
 
-GenomeBuilder::GenomeBuilder(Genome::GenomeId id, std::string lineage)
-    : genome_(id, std::move(lineage)) {}
-
-GenomeBuilder& GenomeBuilder::new_chromosome(Chromosome::ChromosomeId id, std::string label) {
-    if (current_chromosome_.has_value()) {
-        genome_.add_chromosome(std::move(*current_chromosome_));
-    }
-    current_chromosome_ = Chromosome(id, std::move(label));
-    return *this;
+SubsystemType GenomeLoader::parse_subsystem(std::string_view str) noexcept {
+    if (str == "BrainTopology") return SubsystemType::BrainTopology;
+    if (str == "Plasticity")    return SubsystemType::Plasticity;
+    if (str == "Drives")        return SubsystemType::Drives;
+    if (str == "Hormones")      return SubsystemType::Hormones;
+    if (str == "Perception")    return SubsystemType::Perception;
+    if (str == "Motor")         return SubsystemType::Motor;
+    return SubsystemType::Metacognition;
 }
 
-GenomeBuilder& GenomeBuilder::add_gene(Gene gene) {
-    if (current_chromosome_.has_value()) {
-        current_chromosome_->add_gene(std::move(gene));
-    }
-    return *this;
+static DevelopmentalStage parse_stage(std::string_view str) noexcept {
+    if (str == "Embryo")      return DevelopmentalStage::Embryo;
+    if (str == "Infancy")     return DevelopmentalStage::Infancy;
+    if (str == "Childhood")   return DevelopmentalStage::Childhood;
+    if (str == "Adolescence") return DevelopmentalStage::Adolescence;
+    return DevelopmentalStage::Adulthood;
 }
 
-Genome GenomeBuilder::build() {
-    if (current_chromosome_.has_value()) {
-        genome_.add_chromosome(std::move(*current_chromosome_));
-        current_chromosome_.reset();
+std::expected<Genome, LoaderError> GenomeLoader::parse(std::string_view json_str) {
+    try {
+        json root = json::parse(json_str);
+
+        uint64_t genome_id = root.value("genome_id", 1ULL);
+        std::string lineage = root.value("lineage", "Unknown-Lineage");
+
+        Genome genome(genome_id, lineage);
+
+        if (root.contains("chromosomes") && root["chromosomes"].is_array()) {
+            for (const auto& chrom_json : root["chromosomes"]) {
+                uint32_t chrom_id = chrom_json.value("id", 1U);
+                std::string label = chrom_json.value("label", "Chromosome");
+                Chromosome chromosome(chrom_id, label);
+
+                if (chrom_json.contains("genes") && chrom_json["genes"].is_array()) {
+                    for (const auto& gene_json : chrom_json["genes"]) {
+                        Allele maternal{
+                            gene_json["maternal_allele"].value("value", 0.0),
+                            gene_json["maternal_allele"].value("dominance", 1.0),
+                            gene_json["maternal_allele"].value("is_active", true)
+                        };
+
+                        Allele paternal{
+                            gene_json["paternal_allele"].value("value", 0.0),
+                            gene_json["paternal_allele"].value("dominance", 1.0),
+                            gene_json["paternal_allele"].value("is_active", true)
+                        };
+
+                        ExpressionWindow window{
+                            parse_stage(gene_json["window"].value("onset", "Embryo")),
+                            parse_stage(gene_json["window"].value("peak", "Embryo")),
+                            parse_stage(gene_json["window"].value("decay", "Adulthood"))
+                        };
+
+                        Gene gene(
+                            gene_json.value("id", 0ULL),
+                            gene_json.value("name", "UnnamedGene"),
+                            parse_subsystem(gene_json.value("subsystem", "Hormones")),
+                            gene_json.value("target", "unassigned_target"),
+                            maternal,
+                            paternal,
+                            window,
+                            gene_json.value("mutation_rate", 0.01),
+                            gene_json.value("is_mutable", true)
+                        );
+
+                        chromosome.add_gene(std::move(gene));
+                    }
+                }
+                genome.add_chromosome(std::move(chromosome));
+            }
+        }
+
+        genome.rebuild_index();
+        return genome;
+
+    } catch (const std::exception& e) {
+        std::cerr << "[GenomeLoader Error] JSON Parse failed: " << e.what() << std::endl;
+        return std::unexpected(LoaderError::MalformedJson);
     }
-    return std::move(genome_);
-}
-
-Genome GenomeBuilder::create_default_human_template() {
-    GenomeBuilder builder(1001, "Genesis-Baseline");
-
-    // Chromosome 1: Neuromodulatory System
-    builder.new_chromosome(1, "Autonomic-Neuromodulators")
-        .add_gene(Gene{
-            1, "dopamine_baseline_rate", SubsystemType::Hormones, "dopamine_clearance_rate",
-            Allele{0.05, 1.0, true}, Allele{0.05, 1.0, true},
-            ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Embryo, DevelopmentalStage::Adulthood},
-            0.01, true
-        })
-        .add_gene(Gene{
-            2, "noradrenaline_sensitivity", SubsystemType::Hormones, "noradrenaline_arousal_gain",
-            Allele{0.80, 1.0, true}, Allele{0.75, 0.8, true},
-            ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Infancy, DevelopmentalStage::Adulthood},
-            0.02, true
-        });
-
-    // Chromosome 2: Neuroplastic Growth Rules
-    builder.new_chromosome(2, "Morphology-Plasticity")
-        .add_gene(Gene{
-            3, "stdp_potentiation_rate", SubsystemType::Plasticity, "stdp_ltp_rate",
-            Allele{0.015, 1.0, true}, Allele{0.012, 1.0, true},
-            ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Childhood, DevelopmentalStage::Adulthood},
-            0.01, true
-        })
-        .add_gene(Gene{
-            4, "structural_synaptogenesis_threshold", SubsystemType::Plasticity, "synapse_spawn_threshold",
-            Allele{0.70, 1.0, true}, Allele{0.65, 0.5, true},
-            ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Infancy, DevelopmentalStage::Adolescence},
-            0.02, true
-        });
-
-    return builder.build();
 }
 
 } // namespace dhm::genome
