@@ -1,32 +1,43 @@
 {
-  "lineage": "Genesis-01",
-  "genome_id": 1001,
+  "genome_id": 1,
+  "lineage": "Adam-Genesis-01",
   "chromosomes": [
     {
       "id": 1,
-      "label": "Subcortical-Autonomic",
+      "label": "Autonomic-Neuromodulation",
       "genes": [
         {
           "id": 101,
-          "name": "curiosity_baseline",
-          "subsystem": "Drives",
-          "target": "drive_curiosity_base",
-          "maternal": { "value": 0.85, "dominance": 1.0, "active": true },
-          "paternal": { "value": 0.70, "dominance": 0.5, "active": true },
-          "window": { "onset": 0, "peak": 1, "decay": 4 },
-          "mutation_rate": 0.02,
-          "mutable": true
+          "name": "Dopamine-Clearance",
+          "subsystem": "Hormones",
+          "target": "dopamine_clearance_rate",
+          "maternal_allele": { "value": 0.05, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.04, "dominance": 0.8, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Embryo", "decay": "Adulthood" },
+          "mutation_rate": 0.005,
+          "is_mutable": true
         },
         {
           "id": 102,
-          "name": "dopamine_reuptake",
+          "name": "Noradrenaline-Arousal",
           "subsystem": "Hormones",
-          "target": "dopamine_clearance_rate",
-          "maternal": { "value": 0.05, "dominance": 0.8, "active": true },
-          "paternal": { "value": 0.04, "dominance": 0.8, "active": true },
-          "window": { "onset": 0, "peak": 0, "decay": 4 },
+          "target": "noradrenaline_arousal_gain",
+          "maternal_allele": { "value": 0.85, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.70, "dominance": 0.5, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Adulthood" },
           "mutation_rate": 0.01,
-          "mutable": true
+          "is_mutable": true
+        },
+        {
+          "id": 103,
+          "name": "Innate-Curiosity-Bias",
+          "subsystem": "Drives",
+          "target": "curiosity_base_drive",
+          "maternal_allele": { "value": 0.90, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.85, "dominance": 0.9, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Adulthood" },
+          "mutation_rate": 0.02,
+          "is_mutable": true
         }
       ]
     }
