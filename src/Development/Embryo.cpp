@@ -9,7 +9,7 @@ namespace dhm::development {
 
 class EmbryoDevelopment {
 public:
-    static void develop_embryo(const genome::Genome& genome, brain::Brain& proto_brain) {
+    static void develop_embryo(const genome::Genome& genome) {
         std::cout << "[Embryo] Beginning embryonic neurogenesis..." << std::endl;
 
         // 1. Validate Genome Viability

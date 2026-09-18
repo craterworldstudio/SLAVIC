@@ -92,13 +92,15 @@ public:
         std::string_view parameter_name, 
         DevelopmentalStage stage) const;
 
+    void rebuild_index() noexcept;
+
 private:
     GenomeId id_;
     std::string lineage_name_;
     std::vector<Chromosome> chromosomes_;
     std::unordered_map<std::string, const Gene*> parameter_to_gene_index_;
 
-    void rebuild_index() noexcept;
+    
 };
 
 } // namespace dhm::genome

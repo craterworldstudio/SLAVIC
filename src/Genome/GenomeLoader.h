@@ -11,6 +11,7 @@ namespace dhm::genome {
 enum class LoaderError : uint8_t {
     FileNotFound,
     ReadFailed,
+    MalformedJson,
     ParseError,
     CorruptData,
     InvalidSchema
@@ -23,15 +24,16 @@ public:
      */
     [[nodiscard]] static std::expected<Genome, LoaderError> load_from_file(
         const std::filesystem::path& file_path
-    ) noexcept;
+    );
 
     /**
      * @brief Direct text buffer parsing.
      */
     [[nodiscard]] static std::expected<Genome, LoaderError> parse(
         std::string_view raw_content
-    ) noexcept;
+    );
 
+    
 private:
     [[nodiscard]] static SubsystemType parse_subsystem(std::string_view str) noexcept;
 };

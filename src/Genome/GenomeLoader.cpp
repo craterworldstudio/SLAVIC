@@ -2,8 +2,18 @@
 #include <fstream>
 #include <sstream>
 #include <charconv>
+#include <nlohmann/json.hpp>
 
 namespace dhm::genome {
+
+// Helper function to map JSON strings to DevelopmentalStage enums
+static DevelopmentalStage parse_stage(std::string_view str) noexcept {
+    if (str == "Embryo")      return DevelopmentalStage::Embryo;
+    if (str == "Infancy")     return DevelopmentalStage::Infancy;
+    if (str == "Childhood")   return DevelopmentalStage::Childhood;
+    if (str == "Adolescence") return DevelopmentalStage::Adolescence;
+    return DevelopmentalStage::Adulthood;
+}
 
 SubsystemType GenomeLoader::parse_subsystem(std::string_view str) noexcept {
     if (str == "BrainTopology") return SubsystemType::BrainTopology;
@@ -17,7 +27,7 @@ SubsystemType GenomeLoader::parse_subsystem(std::string_view str) noexcept {
 
 std::expected<Genome, LoaderError> GenomeLoader::load_from_file(
     const std::filesystem::path& file_path
-) noexcept {
+) {
     if (!std::filesystem::exists(file_path)) {
         return std::unexpected(LoaderError::FileNotFound);
     }
@@ -34,47 +44,72 @@ std::expected<Genome, LoaderError> GenomeLoader::load_from_file(
 
 std::expected<Genome, LoaderError> GenomeLoader::parse(
     std::string_view raw_content
-) noexcept {
+) {
     if (raw_content.empty()) {
         return std::unexpected(LoaderError::CorruptData);
     }
 
-    // Default embryonic initialization
-    Genome genome(1001, "Genesis-Embryo");
+    try {
+        nlohmann::json root = nlohmann::json::parse(raw_content);
 
-    Chromosome primary_chromosome(1, "Autonomic-Core");
+        uint64_t genome_id = root.value("genome_id", 1ULL);
+        std::string lineage = root.value("lineage", "Unknown-Lineage");
 
-    // Pre-wired developmental curiosity drive
-    Gene curiosity_gene(
-        101,
-        "curiosity_baseline",
-        SubsystemType::Drives,
-        "drive_curiosity_base",
-        Allele{0.85, 1.0, true},
-        Allele{0.70, 0.5, true},
-        ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Infancy, DevelopmentalStage::Adulthood},
-        0.02,
-        true
-    );
+        Genome genome(genome_id, lineage);
 
-    // Pre-wired neurochemical baseline
-    Gene dopamine_gene(
-        102,
-        "dopamine_clearance",
-        SubsystemType::Hormones,
-        "dopamine_clearance_rate",
-        Allele{0.05, 0.8, true},
-        Allele{0.04, 0.8, true},
-        ExpressionWindow{DevelopmentalStage::Embryo, DevelopmentalStage::Embryo, DevelopmentalStage::Adulthood},
-        0.01,
-        true
-    );
+        if (root.contains("chromosomes") && root["chromosomes"].is_array()) {
+            for (const auto& chrom_json : root["chromosomes"]) {
+                uint32_t chrom_id = chrom_json.value("id", 1U);
+                std::string label = chrom_json.value("label", "Chromosome");
+                Chromosome chromosome(chrom_id, label);
 
-    primary_chromosome.add_gene(std::move(curiosity_gene));
-    primary_chromosome.add_gene(std::move(dopamine_gene));
-    genome.add_chromosome(std::move(primary_chromosome));
+                if (chrom_json.contains("genes") && chrom_json["genes"].is_array()) {
+                    for (const auto& gene_json : chrom_json["genes"]) {
+                        Allele maternal{
+                            gene_json["maternal_allele"].value("value", 0.0),
+                            gene_json["maternal_allele"].value("dominance", 1.0),
+                            gene_json["maternal_allele"].value("is_active", true)
+                        };
 
-    return genome;
+                        Allele paternal{
+                            gene_json["paternal_allele"].value("value", 0.0),
+                            gene_json["paternal_allele"].value("dominance", 1.0),
+                            gene_json["paternal_allele"].value("is_active", true)
+                        };
+
+                        ExpressionWindow window{
+                            parse_stage(gene_json["window"].value("onset", "Embryo")),
+                            parse_stage(gene_json["window"].value("peak", "Embryo")),
+                            parse_stage(gene_json["window"].value("decay", "Adulthood"))
+                        };
+
+                        Gene gene(
+                            gene_json.value("id", 0ULL),
+                            gene_json.value("name", "UnnamedGene"),
+                            parse_subsystem(gene_json.value("subsystem", "Hormones")),
+                            gene_json.value("target", "unassigned_target"),
+                            maternal,
+                            paternal,
+                            window,
+                            gene_json.value("mutation_rate", 0.01),
+                            gene_json.value("is_mutable", true)
+                        );
+
+                        chromosome.add_gene(std::move(gene));
+                    }
+                }
+                genome.add_chromosome(std::move(chromosome));
+            }
+        }
+
+        genome.rebuild_index(); 
+        return genome;
+
+    } catch (const nlohmann::json::parse_error&) {
+        return std::unexpected(LoaderError::MalformedJson);
+    } catch (const nlohmann::json::exception&) {
+        return std::unexpected(LoaderError::ParseError);
+    }
 }
 
 } // namespace dhm::genome

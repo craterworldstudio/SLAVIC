@@ -5,12 +5,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(MSVC)
-    add_compile_options(/W4)
-else()
-    add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
-
 # Find Vulkan SDK
 find_package(Vulkan REQUIRED)
 
@@ -28,14 +22,36 @@ file(GLOB_RECURSE DHM_SOURCES
 
 add_executable(DHM-02 ${DHM_SOURCES})
 
-# --- Jolt Physics Setup ---
+# Apply strict warnings ONLY to SLAVIC code to prevent third-party library errors
+if(MSVC)
+    target_compile_options(DHM-02 PRIVATE /W4)
+else()
+    target_compile_options(DHM-02 PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+include(FetchContent)
+
+# --- Jolt Physics Setup (Auto-Fetch) ---
+set(TARGET_UNIT_TESTS OFF CACHE BOOL "" FORCE)
+set(TARGET_HELLO_WORLD OFF CACHE BOOL "" FORCE)
+set(TARGET_PERFORMANCE_TEST OFF CACHE BOOL "" FORCE)
+set(TARGET_SAMPLES OFF CACHE BOOL "" FORCE)
+set(TARGET_VIEWER OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 set(USE_STATIC_MSVC_RUNTIME_LIBRARY OFF CACHE BOOL "" FORCE)
 set(PORTABLE_COMPILER_FLAGS ON CACHE BOOL "" FORCE)
-add_subdirectory(external/jolt)
+set(USE_WERROR OFF CACHE BOOL "" FORCE) # Disable strict warnings in Jolt
 
-# --- JSON Setup ---
-include(FetchContent)
+FetchContent_Declare(
+    jolt
+    GIT_REPOSITORY https://github.com/jrouwe/JoltPhysics.git
+    GIT_TAG        v5.0.0
+    SOURCE_SUBDIR  Build  # Important: Jolt's CMakeLists is inside its Build folder
+)
+FetchContent_MakeAvailable(jolt)
+FetchContent_GetProperties(jolt)
+
+# --- JSON Setup (Auto-Fetch) ---
 FetchContent_Declare(
     json
     URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
@@ -47,5 +63,5 @@ target_link_libraries(DHM-02 PRIVATE Vulkan::Vulkan Jolt nlohmann_json::nlohmann
 
 target_include_directories(DHM-02 PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/jolt>
+    ${jolt_SOURCE_DIR} # Make <Jolt/Jolt.h> visible to your code
 )

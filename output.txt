@@ -1,16 +1,16 @@
 ==========================================
- Digital Human Mind (DHM) - Core Runtime  
+ S.L.A.V.I.C (DHM-02) - Core Runtime                    
 ==========================================
-[Phase 0] Synthesizing Adam Genome Template...
-[Phase 0] Instantiating Spiking Brain Context...
-[GpuBrainContext] Fallback Device: llvmpipe (LLVM 20.1.2, 256 bits)
+[Boot] Loading genome from: genomes/adam.json
+[Genome] Successfully loaded lineage: Adam-Genesis-01
+[GpuBrainContext] Bound Device: AMD Radeon RX 9060 XT (RADV GFX1200)
+[GpuBrainContext] Fallback Device: AMD Radeon RX 9060 XT (RADV GFX1200)
 [GpuBrainContext] Vulkan Compute initialized successfully.
-[Brain] Reading genome: Genesis-Baseline
+[Brain] Reading genome: Adam-Genesis-01
 [BrainState] Allocated 100000 neurons in VRAM (3 MB)
 [BrainBootstrap] Building Spiking Compute Pipeline...
 [BrainBootstrap] Spiking compute pipeline initialized and bound to VRAM.
 [Brain] Embryonic bootstrap complete. Online.
-[Phase 0] System operational on dedicated GPU.
-[Simulation] Running 10 embryonic ticks on GPU...
+[Simulation] Running embryonic ticks on GPU...
 [Simulation] Ticks completed successfully.
 [Brain] Shutting down simulation clock...
