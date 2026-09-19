@@ -1,8 +1,7 @@
 ==========================================
- S.L.A.V.I.C (DHM-02) - Core Runtime                    
+ S.L.A.V.I.C (DHM-02) - Core Runtime      
 ==========================================
 [Boot] Loading genome from: genomes/adam.json
-[Genome] Successfully loaded lineage: Adam-Genesis-01
 [GpuBrainContext] Bound Device: AMD Radeon RX 9060 XT (RADV GFX1200)
 [GpuBrainContext] Fallback Device: AMD Radeon RX 9060 XT (RADV GFX1200)
 [GpuBrainContext] Vulkan Compute initialized successfully.
@@ -11,6 +10,6 @@
 [BrainBootstrap] Building Spiking Compute Pipeline...
 [BrainBootstrap] Spiking compute pipeline initialized and bound to VRAM.
 [Brain] Embryonic bootstrap complete. Online.
-[Simulation] Running embryonic ticks on GPU...
-[Simulation] Ticks completed successfully.
+[Simulation] Entering main loop...
+[Brain] Shutting down simulation clock...
 [Brain] Shutting down simulation clock...
