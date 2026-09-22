@@ -1,0 +1,179 @@
+{
+  "genome_id": 1,
+  "lineage": "Neo-Genesis-01",
+  "chromosomes": [
+    {
+      "id": 1,
+      "label": "Autonomic-Neuromodulation",
+      "genes": [
+        {
+          "id": 101,
+          "name": "Dopamine-Clearance",
+          "subsystem": "Hormones",
+          "target": "dopamine_clearance_rate",
+          "maternal_allele": { "value": 0.05, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.04, "dominance": 0.8, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Embryo", "decay": "Adulthood" },
+          "mutation_rate": 0.005,
+          "is_mutable": true
+        },
+        {
+          "id": 102,
+          "name": "Noradrenaline-Arousal",
+          "subsystem": "Hormones",
+          "target": "noradrenaline_arousal_gain",
+          "maternal_allele": { "value": 0.85, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.70, "dominance": 0.5, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Adulthood" },
+          "mutation_rate": 0.01,
+          "is_mutable": true
+        },
+        {
+          "id": 103,
+          "name": "Innate-Curiosity-Bias",
+          "subsystem": "Drives",
+          "target": "curiosity_base_drive",
+          "maternal_allele": { "value": 0.90, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.85, "dominance": 0.9, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Adulthood" },
+          "mutation_rate": 0.02,
+          "is_mutable": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "label": "Structural-Topology",
+      "genes": [
+        {
+          "id": 201,
+          "name": "Neuron-Density-Cap",
+          "subsystem": "Neurogenesis",
+          "target": "max_neuron_count_per_voxel",
+          "maternal_allele": { "value": 1000.0, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 850.0, "dominance": 0.6, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Embryo", "decay": "Infancy" },
+          "mutation_rate": 0.008,
+          "is_mutable": true
+        },
+        {
+          "id": 202,
+          "name": "Axonal-Growth-Cone-Guidance",
+          "subsystem": "Neurogenesis",
+          "target": "chemotropic_attraction_coefficient",
+          "maternal_allele": { "value": 0.45, "dominance": 0.7, "is_active": true },
+          "paternal_allele": { "value": 0.50, "dominance": 1.0, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Embryo", "decay": "Infancy" },
+          "mutation_rate": 0.015,
+          "is_mutable": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "label": "Synaptic-Plasticity",
+      "genes": [
+        {
+          "id": 301,
+          "name": "STDP-Hebbian-Window",
+          "subsystem": "Learning",
+          "target": "stdp_tau_plus_ms",
+          "maternal_allele": { "value": 20.0, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 25.0, "dominance": 0.4, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Never" },
+          "mutation_rate": 0.01,
+          "is_mutable": true
+        },
+        {
+          "id": 302,
+          "name": "Homeostatic-Synaptic-Scaling",
+          "subsystem": "Learning",
+          "target": "synaptic_normalization_factor",
+          "maternal_allele": { "value": 0.02, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 0.02, "dominance": 1.0, "is_active": true },
+          "window": { "onset": "Infancy", "peak": "Juvenile", "decay": "Never" },
+          "mutation_rate": 0.005,
+          "is_mutable": true
+        },
+        {
+          "id": 303,
+          "name": "Glutamatergic-Excitation-Gain",
+          "subsystem": "Synapses",
+          "target": "ampa_receptor_density",
+          "maternal_allele": { "value": 1.20, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 1.05, "dominance": 0.5, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Never" },
+          "mutation_rate": 0.012,
+          "is_mutable": true
+        },
+        {
+          "id": 304,
+          "name": "GABAergic-Inhibitory-Tone",
+          "subsystem": "Synapses",
+          "target": "gaba_hyperpolarization_depth",
+          "maternal_allele": { "value": -75.0, "dominance": 0.9, "is_active": true },
+          "paternal_allele": { "value": -70.0, "dominance": 1.0, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Never" },
+          "mutation_rate": 0.011,
+          "is_mutable": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "label": "Electrophysiological-Dynamics",
+      "genes": [
+        {
+          "id": 401,
+          "name": "Membrane-Leak-Rate",
+          "subsystem": "Cellular",
+          "target": "membrane_time_constant_tau_m",
+          "maternal_allele": { "value": 15.0, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 18.0, "dominance": 0.2, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Juvenile", "decay": "Never" },
+          "mutation_rate": 0.005,
+          "is_mutable": true
+        },
+        {
+          "id": 402,
+          "name": "Refractory-Period-Stiffness",
+          "subsystem": "Cellular",
+          "target": "absolute_refractory_period_ms",
+          "maternal_allele": { "value": 2.0, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 2.5, "dominance": 0.7, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Juvenile", "decay": "Never" },
+          "mutation_rate": 0.002,
+          "is_mutable": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "label": "Peripheral-Sensory-Motor",
+      "genes": [
+        {
+          "id": 501,
+          "name": "Sensory-Afferent-Encoding",
+          "subsystem": "IO_Interface",
+          "target": "poisson_encoder_frequency_scaling",
+          "maternal_allele": { "value": 100.0, "dominance": 1.0, "is_active": true },
+          "paternal_allele": { "value": 90.0, "dominance": 0.5, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Never" },
+          "mutation_rate": 0.02,
+          "is_mutable": true
+        },
+        {
+          "id": 502,
+          "name": "Motor-Efferent-Decoding",
+          "subsystem": "IO_Interface",
+          "target": "spike_integration_motor_threshold",
+          "maternal_allele": { "value": 15.0, "dominance": 0.8, "is_active": true },
+          "paternal_allele": { "value": 12.0, "dominance": 1.0, "is_active": true },
+          "window": { "onset": "Embryo", "peak": "Infancy", "decay": "Never" },
+          "mutation_rate": 0.02,
+          "is_mutable": true
+        }
+      ]
+    }
+  ]
+}
